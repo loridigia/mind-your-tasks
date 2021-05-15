@@ -28,6 +28,7 @@ dependencies:
   google_fonts: ^0.3.5
   datetime_picker_formfield: ^2.0.0
   rflutter_alert: ^2.0.2
+  cupertino_tabbar: ^2.0.0
 
 dev_dependencies:
   flutter_test:

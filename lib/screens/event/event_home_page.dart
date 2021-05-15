@@ -1,3 +1,4 @@
+import 'package:cupertino_tabbar/cupertino_tabbar.dart' as CupertinoTabBar;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_your_tasks/screens/task/add_task.dart';
@@ -21,6 +22,8 @@ class EventHomePage extends StatefulWidget {
 }
 
 class _EventHomePageState extends State<EventHomePage> {
+  int cupertinoTabBarIIIValue = 3;
+  int cupertinoTabBarIIIValueGetter() => cupertinoTabBarIIIValue;
   @override
   Widget build(BuildContext context) {
     double percentage = 50/100;
@@ -28,7 +31,7 @@ class _EventHomePageState extends State<EventHomePage> {
     return Scaffold(
       //backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
-    appBar: PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(30.0),
         child: AppBar(
           backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
@@ -420,215 +423,157 @@ class _EventHomePageState extends State<EventHomePage> {
               )
             ),
         ),
-            Expanded(
-              child: SingleChildScrollView(
+        Container(
+                padding: EdgeInsets.symmetric(horizontal:1.0, vertical: 1.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                width: width,
+                height: 210,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child:Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                            flex: 60,
+                            child: CupertinoTabBar.CupertinoTabBar(
+                              const Color.fromRGBO(255, 255, 255, 1.0),
+                              const Color(0xFFf7f7f7),
+                              [
+                                const Text(
+                                  "Completed",
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17.00,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "SFProRounded",
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const Text(
+                                  "Active",
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17.00,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "SFProRounded",
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const Text(
+                                  "Pending",
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17.00,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "SFProRounded",
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                              cupertinoTabBarIIIValueGetter,
+                                  (int index) {
+                                setState(() {
+                                  cupertinoTabBarIIIValue = index;
+                                });
+                              },
+                              useShadow: true,
+                              innerHorizontalPadding: 0,
+                            ),
+                        ),
+                        Expanded(
+                            flex: 10,
+                            child:GestureDetector(
+                              onTap: () => _onAddTask(context),
+                              child: Icon(Icons.note_add, size: 22),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 10,
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchTaskPage(color: Color.fromRGBO(246, 197, 15, 0.8))),
+                                );
+                              },
+                              child: Icon(Icons.arrow_forward_ios, size: 22)
+                          ),
+                        ),
+                      ],
+                    ),
+                    ),
+                        Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                         _showTab(),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _showTab() {
+    if (cupertinoTabBarIIIValueGetter() == 1) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0));
+    else if (cupertinoTabBarIIIValueGetter() == 2) return showTaskList(Color.fromRGBO(246, 197, 15, 1.0));
+    else return showTaskList(Color.fromRGBO(219, 20, 36, 1.0));
+  }
+
+  showTaskList(Color color) {
+    return Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: Colors.transparent,
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   children: <Widget>[
                     Container(
-                      color: Colors.transparent,
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                      child: Column(
+                      margin: EdgeInsets.symmetric(vertical: 5.0),
+                      height: 130.0,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 80,
-                                  child: subheading('Pending tasks')
-                                ),
-                                Expanded(
-                                    flex: 10,
-                                    child:GestureDetector(
-                                      onTap: () => _onAddTask(context),
-                                      child: Icon(Icons.note_add, size: 22),
-                                    ),
-                                ),
-                                Expanded(
-                                  flex: 10,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => SearchTaskPage(color: Color.fromRGBO(255, 0, 20, 0.57))),
-                                        );
-                                      },
-                                      child: Icon(Icons.arrow_forward_ios, size: 22)
-                                  ),
-                                ),
-                              ],
-                            ),
+                          GestureDetector(
+                            onTap: () => _onAlertButtonsPressed(context),
+                            child: TaskContainer(
+                                color: color,
+                                taskName: "Buy Coke",
+                                personName: "Mario Rossi",
+                                date: "13/02/2021 10:30",
+                                desc: "Description of something about something else to be cut..."),
                           ),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5.0),
-                            height: 130.0,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(219, 20, 36, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(219, 20, 36, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(219, 20, 36, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                              ],
-                            ),
+                          GestureDetector(
+                            onTap: () => _onAlertButtonsPressed(context),
+                            child: TaskContainer(
+                                color: color,
+                                taskName: "Buy Coke",
+                                personName: "Mario Rossi",
+                                date: "13/02/2021 10:30",
+                                desc: "Description of something about something else to be cut..."),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                    flex: 80,
-                                    child: subheading('Active tasks')
-                                ),
-                                Expanded(
-                                    flex: 10,
-                                    child: Icon(Icons.note_add, size: 22,)
-                                ),
-                                Expanded(
-                                    flex: 10,
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => SearchTaskPage(color: Color.fromRGBO(246, 197, 15, 0.8))),
-                                          );
-                                        },
-                                      child: Icon(Icons.arrow_forward_ios, size: 22)
-                                    ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5.0),
-                            height: 130.0,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(246, 197, 15, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(246, 197, 15, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(246, 197, 15, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                    flex: 80,
-                                    child: subheading('Completed tasks')
-                                ),
-                                Expanded(
-                                    flex: 10,
-                                    child: Icon(Icons.note_add, size: 22,)
-                                ),
-                                Expanded(
-                                  flex: 10,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => SearchTaskPage(color: Color.fromRGBO(67, 147, 31, 0.8))),
-                                        );
-                                      },
-                                      child: Icon(Icons.arrow_forward_ios, size: 22)
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5.0),
-                            height: 130.0,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(67, 147, 31, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(67, 147, 31, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                                GestureDetector(
-                                  onTap: () => _onAlertButtonsPressed(context),
-                                  child: TaskContainer(
-                                      color: Color.fromRGBO(67, 147, 31, 1.0),
-                                      taskName: "Buy Coke",
-                                      personName: "Mario Rossi",
-                                      date: "13/02/2021 10:30",
-                                      desc: "Description of something about something else to be cut..."),
-                                ),
-                              ],
-                            ),
+                          GestureDetector(
+                            onTap: () => _onAlertButtonsPressed(context),
+                            child: TaskContainer(
+                                color: color,
+                                taskName: "Buy Coke",
+                                personName: "Mario Rossi",
+                                date: "13/02/2021 10:30",
+                                desc: "Description of something about something else to be cut..."),
                           ),
                         ],
                       ),
@@ -636,11 +581,10 @@ class _EventHomePageState extends State<EventHomePage> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 
   _onAlertButtonsPressed(context) {
