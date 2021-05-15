@@ -22,7 +22,7 @@ class EventHomePage extends StatefulWidget {
 }
 
 class _EventHomePageState extends State<EventHomePage> {
-  int cupertinoTabBarIIIValue = 3;
+  int cupertinoTabBarIIIValue = 0;
   int cupertinoTabBarIIIValueGetter() => cupertinoTabBarIIIValue;
   @override
   Widget build(BuildContext context) {
@@ -527,8 +527,8 @@ class _EventHomePageState extends State<EventHomePage> {
   }
 
   _showTab() {
-    if (cupertinoTabBarIIIValueGetter() == 1) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0));
-    else if (cupertinoTabBarIIIValueGetter() == 2) return showTaskList(Color.fromRGBO(246, 197, 15, 1.0));
+    if (cupertinoTabBarIIIValueGetter() == 0) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0));
+    else if (cupertinoTabBarIIIValueGetter() == 1) return showTaskList(Color.fromRGBO(246, 197, 15, 1.0));
     else return showTaskList(Color.fromRGBO(219, 20, 36, 1.0));
   }
 

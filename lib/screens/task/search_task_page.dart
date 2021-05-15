@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mind_your_tasks/screens/task/add_task.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:mind_your_tasks/widgets/main_drawer.dart';
+import 'package:mind_your_tasks/widgets/task_container.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SearchTaskPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500)
           ),
-          backgroundColor: Colors.blueAccent.withOpacity(0.5),
+          backgroundColor: LightColors.kBlue,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
@@ -45,7 +46,7 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Container(
-                  color: Colors.blueAccent.withOpacity(0.5),
+                  color: LightColors.kBlue,
                   child: Column(
                     children: [
                       Row(
@@ -103,10 +104,10 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                               style: TextStyle(fontSize: 13, color: Colors.white),
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(
-                                  Icons.note,
+                                  Icons.pending_actions_rounded,
                                   color: Colors.white,
                                 ),
-                                hintText: 'Description',
+                                hintText: 'Status',
                               ),
                             ),
                           ),
@@ -127,7 +128,12 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                   itemBuilder: (BuildContext context, int index){
                     return GestureDetector(
                       onTap: () => _onAlertButtonsPressed(context),
-                      child: taskCard(widget.color),
+                      child: TaskContainer(
+                          color: Color.fromRGBO(67, 147, 31, 1.0),
+                          taskName: "Buy Coke",
+                          personName: "Mario Rossi",
+                          date: "13/02/2021 10:30",
+                          desc: "Description of something about something else to be cut, but here is much bigger you know what i mean..."),
                     );
                   },
                 ),
@@ -428,46 +434,6 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               "ASSIGN TO ME",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          )
-        ]).show();
-  }
-
-
-  _onAddTask(context) {
-    // Reusable alert style
-    var alertStyle = AlertStyle(
-      animationType: AnimationType.fromTop,
-      isCloseButton: false,
-      isOverlayTapDismiss: true,
-      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
-      animationDuration: Duration(milliseconds: 200),
-      alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(
-          color: Colors.white,
-        ),
-      ),
-      titleStyle: TextStyle(
-          color: Color.fromRGBO(67, 147, 31, 0.8),
-          fontSize: 25,
-          fontWeight: FontWeight.w800
-      ),
-    );
-
-    // Alert dialog using custom alert style
-    Alert(
-        context: context,
-        style: alertStyle,
-        type: AlertType.none,
-        title: "Completed Task",
-        content: AddTaskPage(),
-        buttons: [
-          DialogButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "CREATE TASK",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           )
