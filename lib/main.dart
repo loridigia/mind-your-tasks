@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mind_your_tasks/screens/home_page.dart';
 import 'package:mind_your_tasks/screens/welcomePage.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:flutter/services.dart';

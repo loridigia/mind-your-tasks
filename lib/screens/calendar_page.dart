@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mind_your_tasks/dates_list.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:mind_your_tasks/widgets/calendar_dates.dart';
-import 'package:mind_your_tasks/widgets/task_container.dart';
 import 'package:mind_your_tasks/widgets/back_button.dart';
+import 'package:mind_your_tasks/widgets/task_container_calendar.dart';
 
 class CalendarPage extends StatelessWidget {
   Widget _dashedText() {
@@ -123,24 +123,24 @@ class CalendarPage extends StatelessWidget {
                             physics: NeverScrollableScrollPhysics(),
                             children: <Widget>[
                               _dashedText(),
-                              TaskContainer(
+                              TaskContainerCalendar(
                                 title: 'Project Research',
                                 subtitle:
                                     'Discuss with the colleagues about the future plan',
                                 boxColor: LightColors.kLightYellow2,
                               ),
                               _dashedText(),
-                              TaskContainer(
+                              TaskContainerCalendar(
                                 title: 'Work on Medical App',
                                 subtitle: 'Add medicine tab',
                                 boxColor: LightColors.kLavender,
                               ),
-                              TaskContainer(
+                              TaskContainerCalendar(
                                 title: 'Call',
                                 subtitle: 'Call to david',
                                 boxColor: LightColors.kPalePink,
                               ),
-                              TaskContainer(
+                              TaskContainerCalendar(
                                 title: 'Design Meeting',
                                 subtitle:
                                     'Discuss with designers for new task for the medical app',

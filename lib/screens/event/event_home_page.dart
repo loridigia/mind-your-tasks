@@ -8,6 +8,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../widgets/task_container.dart';
+
 
 class EventHomePage extends StatefulWidget {
   EventHomePage({Key key, this.title}) : super(key: key);
@@ -468,15 +470,30 @@ class _EventHomePageState extends State<EventHomePage> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(255, 0, 20, 0.47)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(219, 20, 36, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(255, 0, 20, 0.57)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(219, 20, 36, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(255, 0, 20, 0.57)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(219, 20, 36, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                               ],
                             ),
@@ -519,15 +536,30 @@ class _EventHomePageState extends State<EventHomePage> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(246, 197, 15, 0.7)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(246, 197, 15, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(246, 197, 15, 0.8)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(246, 197, 15, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(246, 197, 15, 0.8)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(246, 197, 15, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                               ],
                             ),
@@ -570,15 +602,30 @@ class _EventHomePageState extends State<EventHomePage> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(67, 147, 31, 0.6)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(67, 147, 31, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(67, 147, 31, 0.8)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(67, 147, 31, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                                 GestureDetector(
                                   onTap: () => _onAlertButtonsPressed(context),
-                                  child: taskCard(Color.fromRGBO(67, 147, 31, 0.8)),
+                                  child: TaskContainer(
+                                      color: Color.fromRGBO(67, 147, 31, 1.0),
+                                      taskName: "Buy Coke",
+                                      personName: "Mario Rossi",
+                                      date: "13/02/2021 10:30",
+                                      desc: "Description of something about something else to be cut..."),
                                 ),
                               ],
                             ),
@@ -591,143 +638,6 @@ class _EventHomePageState extends State<EventHomePage> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Container taskCard(Color color) {
-    return Container(
-      width: 170,
-      height: 130,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        color: color,
-        elevation: 2,
-        child:Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.sticky_note_2, size: 16, color: Colors.white)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          "Buy Coke",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.assignment_ind, size: 16, color: Colors.white)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Mario Rossi",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.access_time, size: 16, color: Colors.white)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "13-03-2021 15:30",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                child: Container(
-                  height: 1,
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Description of the task, of course chars must be cut ...",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
         ),
       ),
     );
