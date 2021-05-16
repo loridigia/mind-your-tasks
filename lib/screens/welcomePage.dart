@@ -95,7 +95,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'FaccendAPP',
+          text: 'MIND YOUR TASKS',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.display1,
             fontSize: 30,

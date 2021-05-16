@@ -1,49 +1,70 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mind_your_tasks/models/Task.dart';
+import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/calendar_page.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
 import 'package:mind_your_tasks/screens/project_creation.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/main_drawer.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:mind_your_tasks/widgets/task_column.dart';
 import 'package:mind_your_tasks/widgets/active_project_card.dart';
 import 'package:mind_your_tasks/widgets/top_container.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
-  Text subheading(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-          color: LightColors.kDarkBlue,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.2),
-    );
+class _HomePageState extends State<HomePage> {
+
+  User user;
+
+  @override
+  void initState() {
+    super.initState();
   }
 
-  static CircleAvatar addIcon() {
-    return CircleAvatar(
-      radius: 25.0,
-      backgroundColor: LightColors.kGreen,
-      child: Icon(
-        Icons.add,
-        size: 30.0,
-        color: Colors.white,
-      ),
-    );
+  Future<User> getUser(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    User user = User("lollo", "ciao@gmail.com");
+    bool read = await prefs.setString("lollo", json.encode(user));
+    String data = prefs.getString("lollo");
+    debugPrint(data);
+    Map<String, dynamic> userMap = jsonDecode(data);
+    User user2 = User.fromJson(userMap);
+    return user2;
   }
 
-  static ActiveProjectsCard generateProjectCard(color, donePercent, title, subtitle) {
-    return ActiveProjectsCard(
-      cardColor: color,
-      loadingPercent: donePercent,
-      title: title,
-      subtitle: subtitle);
+  Future<Task> getTask(String name, DateTime date, User user, String description) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Task task = Task(name, date, user, description);
+    bool read = await prefs.setString("task", json.encode(task));
+    String data = prefs.getString("task");
+    debugPrint(data);
+    Map<String, dynamic> taskMap = jsonDecode(data);
+    Task task2 = Task.fromJson(taskMap);
+    return task2;
+  }
+
+  Future<String> getData(String username) async {
+    this.user = await getUser(username);
+    Task task = await getTask("prova task", DateTime.now(), user, "asd");
+    return "ready";
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => FutureBuilder(
+    initialData: false,
+    future: getData("lollo"),
+    builder: (context, snapshot) => snapshot.hasData ? _buildWidget(context, snapshot.data) : const SizedBox(),
+  );
+
+  Widget _buildWidget(BuildContext context, dynamic data) {
+    T cast<T>(x) => x is T ? x : null;
 
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -94,7 +115,7 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  'Giovanni Giorgio',
+                                  "asdasd",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -105,7 +126,7 @@ class HomePage extends StatelessWidget {
                               ),
                               Container(
                                 child: Text(
-                                  'App Developer',
+                                  "asdasd",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -268,5 +289,36 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Text subheading(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+          color: LightColors.kDarkBlue,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2),
+    );
+  }
+
+  static CircleAvatar addIcon() {
+    return CircleAvatar(
+      radius: 25.0,
+      backgroundColor: LightColors.kGreen,
+      child: Icon(
+        Icons.add,
+        size: 30.0,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  static ActiveProjectsCard generateProjectCard(color, donePercent, title, subtitle) {
+    return ActiveProjectsCard(
+        cardColor: color,
+        loadingPercent: donePercent,
+        title: title,
+        subtitle: subtitle);
   }
 }

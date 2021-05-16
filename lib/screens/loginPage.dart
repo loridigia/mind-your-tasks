@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'FACCENDAPP',
+          text: 'MIND YOUR TASKS',
           style: TextStyle(
             fontSize: 27,
             fontWeight: FontWeight.w900,

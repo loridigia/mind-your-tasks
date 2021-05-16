@@ -19,8 +19,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   static TextEditingController controllerPeople = new TextEditingController();
   static TextEditingController controllerDescription = new TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
