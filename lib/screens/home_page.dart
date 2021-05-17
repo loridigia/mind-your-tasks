@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/calendar_page.dart';
@@ -22,50 +23,67 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   User user;
+  List<Event> events;
 
   @override
   void initState() {
     super.initState();
+    setInitStuff();
+  }
+
+  setInitStuff() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    User user = User("TestUser", "test-email@gmail.com");
+    Task task = Task("Test1", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Funny party at mario's home");
+    Task task2 = Task("Test2", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
+    Task task3 = Task("Test3", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE TO DO");
+
+    Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149), [user]);
+    event.addTask(task);
+    event.addTask(task2);
+    event.addTask(task3);
+
+    List<String> events = [json.encode(event)];
+
+    bool setUser = await prefs.setString("TestUser", json.encode(user));
+    bool setEvents = await prefs.setStringList("Events", events);
   }
 
   Future<User> getUser(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user = User("lollo", "ciao@gmail.com");
-    bool read = await prefs.setString("lollo", json.encode(user));
-    String data = prefs.getString("lollo");
-    debugPrint(data);
-    Map<String, dynamic> userMap = jsonDecode(data);
-    User user2 = User.fromJson(userMap);
-    return user2;
+    String data = prefs.getString(username);
+    User user = User.fromJson(json.decode(data));
+    return user;
   }
 
-  Future<Task> getTask(String name, DateTime date, User user, String description) async {
+  Future<List<Event>> getEvents() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Task task = Task(name, date, user, description);
-    bool read = await prefs.setString("task", json.encode(task));
-    String data = prefs.getString("task");
-    debugPrint(data);
-    Map<String, dynamic> taskMap = jsonDecode(data);
-    Task task2 = Task.fromJson(taskMap);
-    return task2;
+    List<String> list = prefs.getStringList("Events");
+    debugPrint(list.getRange(0, 1).first);
+    List<Event> events = [];
+    Set<String> set = list.toSet();
+    set.forEach((element) {
+      events.add(Event.fromJson(jsonDecode(element)));
+    });
+    return events;
   }
+
 
   Future<String> getData(String username) async {
     this.user = await getUser(username);
-    Task task = await getTask("prova task", DateTime.now(), user, "asd");
+    this.events = await getEvents();
     return "ready";
   }
 
   @override
   Widget build(BuildContext context) => FutureBuilder(
     initialData: false,
-    future: getData("lollo"),
-    builder: (context, snapshot) => snapshot.hasData ? _buildWidget(context, snapshot.data) : const SizedBox(),
+    future: getData("TestUser"),
+    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.done && snapshot.hasData ? _buildWidget(context, snapshot.data) : const SizedBox(),
   );
 
   Widget _buildWidget(BuildContext context, dynamic data) {
-    T cast<T>(x) => x is T ? x : null;
-
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -115,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  "asdasd",
+                                  user.username,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -126,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Container(
                                 child: Text(
-                                  "asdasd",
+                                  user.email,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 16.0,

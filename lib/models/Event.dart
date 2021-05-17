@@ -11,7 +11,7 @@ class Event {
   String UUID;
   String name;
   DateTime date;
-  List<Task> tasks;
+  List<Task> tasks = [];
   List<User> users;
   DateTime creationTime;
 
