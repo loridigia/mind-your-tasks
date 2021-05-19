@@ -37,7 +37,7 @@ class ActiveProjectsCard extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                            "Luigi's birthday",
+                            title,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14.0,
@@ -59,7 +59,7 @@ class ActiveProjectsCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                            "13-03-2021 14:30",
+                            subtitle,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11.0,

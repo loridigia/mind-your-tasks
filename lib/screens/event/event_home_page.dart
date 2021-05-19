@@ -1,6 +1,9 @@
 import 'package:cupertino_tabbar/cupertino_tabbar.dart' as CupertinoTabBar;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mind_your_tasks/models/Event.dart';
+import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/screens/task/add_task.dart';
 import 'package:mind_your_tasks/screens/task/search_task_page.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
@@ -13,17 +16,28 @@ import '../../widgets/task_container.dart';
 
 
 class EventHomePage extends StatefulWidget {
-  EventHomePage({Key key, this.title}) : super(key: key);
+  EventHomePage({Key key, this.event}) : super(key: key);
 
-  final String title;
+  Event event;
 
   @override
   _EventHomePageState createState() => _EventHomePageState();
+
+  List<Task> getTasks(Status status) {
+    List<Task> tasks = [];
+    event.tasks.forEach((task) {
+      if (task.status == status) tasks.add(task);
+    });
+    return tasks;
+  }
 }
 
+
 class _EventHomePageState extends State<EventHomePage> {
+
   int cupertinoTabBarIIIValue = 0;
   int cupertinoTabBarIIIValueGetter() => cupertinoTabBarIIIValue;
+  
   @override
   Widget build(BuildContext context) {
     double percentage = 50/100;
@@ -40,6 +54,18 @@ class _EventHomePageState extends State<EventHomePage> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           elevation: 0,
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0, top: 10),
+                child: GestureDetector(
+                  onTap: () {_onAddPeople(context);},
+                  child: Icon(
+                      Icons.person_add,
+                      color: Colors.black,
+                  ),
+                )
+            ),
+          ],
         ),
       ),
       drawer: MainDrawer(),
@@ -52,7 +78,7 @@ class _EventHomePageState extends State<EventHomePage> {
                 children: <Widget>[
                   Padding(padding: EdgeInsets.only(top: 10),
                   child: Text(
-                    "Luigi's birthday",
+                    widget.event.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight:
@@ -135,7 +161,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                               const EdgeInsets.only(
                                                   left: 4, bottom: 3),
                                               child: Text(
-                                                "10",
+                                                widget.event.users.length.toString(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontWeight:
@@ -202,7 +228,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                               const EdgeInsets.only(
                                                   left: 4, bottom: 3),
                                               child: Text(
-                                                "13-04-2021",
+                                                widget.event.date.day.toString() + "-" + widget.event.date.month.toString() + "-" + widget.event.date.year.toString(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontWeight:
@@ -293,7 +319,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                       padding: const EdgeInsets.only(top: 4),
                                       child: LinearPercentIndicator(
                                         animation: true,
-                                        percent: percentage,
+                                        percent: widget.getTasks(Status.COMPLEATED).length / widget.event.tasks.length,
                                         lineHeight: 5,
                                         width: 90,
                                         linearStrokeCap: LinearStrokeCap.roundAll,
@@ -305,7 +331,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '10 left',
+                                        widget.getTasks(Status.COMPLEATED).length.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
@@ -342,7 +368,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                       padding: const EdgeInsets.only(top: 4),
                                       child: LinearPercentIndicator(
                                         animation: true,
-                                        percent: percentage,
+                                        percent: widget.getTasks(Status.ACTIVE).length / widget.event.tasks.length,
                                         lineHeight: 5,
                                         width: 90,
                                         linearStrokeCap: LinearStrokeCap.roundAll,
@@ -353,7 +379,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '10 left',
+                                        widget.getTasks(Status.ACTIVE).length.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
@@ -390,7 +416,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                       padding: const EdgeInsets.only(top: 4),
                                       child: LinearPercentIndicator(
                                         animation: true,
-                                        percent: percentage,
+                                        percent: widget.getTasks(Status.PENDING).length / widget.event.tasks.length,
                                         lineHeight: 5,
                                         width: 90,
                                         linearStrokeCap: LinearStrokeCap.roundAll,
@@ -402,7 +428,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '10 left',
+                                        widget.getTasks(Status.PENDING).length.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
@@ -527,12 +553,42 @@ class _EventHomePageState extends State<EventHomePage> {
   }
 
   _showTab() {
-    if (cupertinoTabBarIIIValueGetter() == 0) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0));
-    else if (cupertinoTabBarIIIValueGetter() == 1) return showTaskList(Color.fromRGBO(246, 197, 15, 1.0));
-    else return showTaskList(Color.fromRGBO(219, 20, 36, 1.0));
+    if (cupertinoTabBarIIIValueGetter() == 0) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0), widget.getTasks(Status.COMPLEATED));
+    else if (cupertinoTabBarIIIValueGetter() == 1) return showTaskList(Color.fromRGBO(246, 197, 15, 1.0), widget.getTasks(Status.ACTIVE));
+    else return showTaskList(Color.fromRGBO(219, 20, 36, 1.0), widget.getTasks(Status.PENDING));
   }
 
-  showTaskList(Color color) {
+  _buildTasks(Color color, List<Task> tasks) {
+    List<Widget> list = [];
+    tasks.forEach((element) {
+      list.add(
+          GestureDetector(
+            onTap: () => _onAlertButtonsPressed(context),
+            child: TaskContainer(
+                color: color,
+                taskName: element.name,
+                personName: element.user != null ? element.user.username : "Not assigned",
+                date: element.date != null ? element.date.year.toString()+"-"+element.date.month.toString()+"-"+element.date.day.toString() : "No date",
+                desc: element.description),
+          )
+      );
+    });
+    if (list.isEmpty) list.add(
+      Padding(
+        padding: const EdgeInsets.only(left: 75, top: 40),
+        child: Text(
+            "THERE ARE NO TASKS",
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500)
+        ),
+      )
+    );
+    return list;
+  }
+
+  showTaskList(Color color, List<Task> tasks) {
     return Expanded(
         child: SingleChildScrollView(
           child: Column(
@@ -547,35 +603,7 @@ class _EventHomePageState extends State<EventHomePage> {
                       height: 130.0,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () => _onAlertButtonsPressed(context),
-                            child: TaskContainer(
-                                color: color,
-                                taskName: "Buy Coke",
-                                personName: "Mario Rossi",
-                                date: "13/02/2021 10:30",
-                                desc: "Description of something about something else to be cut..."),
-                          ),
-                          GestureDetector(
-                            onTap: () => _onAlertButtonsPressed(context),
-                            child: TaskContainer(
-                                color: color,
-                                taskName: "Buy Coke",
-                                personName: "Mario Rossi",
-                                date: "13/02/2021 10:30",
-                                desc: "Description of something about something else to be cut..."),
-                          ),
-                          GestureDetector(
-                            onTap: () => _onAlertButtonsPressed(context),
-                            child: TaskContainer(
-                                color: color,
-                                taskName: "Buy Coke",
-                                personName: "Mario Rossi",
-                                date: "13/02/2021 10:30",
-                                desc: "Description of something about something else to be cut..."),
-                          ),
-                        ],
+                        children: _buildTasks(color, tasks),
                       ),
                     ),
                   ],
@@ -744,6 +772,70 @@ class _EventHomePageState extends State<EventHomePage> {
             ),
           )
         ]).show();
+  }
+
+  _onAddPeople(context) {
+    // Reusable alert style
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromRight,
+      isCloseButton: false,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+      animationDuration: Duration(milliseconds: 200),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: BorderSide(
+          color: Colors.white,
+        ),
+      ),
+      titleStyle: TextStyle(
+          color: Colors.blueAccent,
+          fontSize: 22,
+          fontWeight: FontWeight.w800
+      ),
+    );
+
+    // Alert dialog using custom alert style
+    Alert(
+        context: context,
+        style: alertStyle,
+        type: AlertType.none,
+        title: "Share invite link",
+        content: inviteLink(),
+        buttons: [
+          DialogButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "COPY TO CLIPBOARD",
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+          )
+        ]).show();
+  }
+
+  inviteLink() {
+    return Container(
+      child: Column(
+        children: [
+          Text(
+              "The link will be valid for 15 minutes",
+              style: TextStyle(color: Colors.grey, fontSize: 13),
+          ),
+          TextFormField(
+            maxLines: 1,
+            enabled: false,
+            style: TextStyle(fontSize: 15),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(
+                Icons.link,
+                color: Colors.grey,
+              ),
+              hintText: 'http://mindyourtask.it/'+widget.event.UUID,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
 

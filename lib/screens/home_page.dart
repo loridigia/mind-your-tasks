@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:mind_your_tasks/models/Event.dart';
@@ -8,6 +9,7 @@ import 'package:mind_your_tasks/screens/calendar_page.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
 import 'package:mind_your_tasks/screens/project_creation.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
+import 'package:mind_your_tasks/widgets/task_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/main_drawer.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -24,6 +26,10 @@ class _HomePageState extends State<HomePage> {
 
   User user;
   List<Event> events;
+  List<Task> userTasks;
+  var completedTasks = 0;
+  var activeTasks = 0;
+  var pendingTasks = 0;
 
   @override
   void initState() {
@@ -35,16 +41,30 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     User user = User("TestUser", "test-email@gmail.com");
-    Task task = Task("Test1", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Funny party at mario's home");
+    Task task = Task("Test1", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Buy Stuff");
+    task.status = Status.COMPLEATED;
     Task task2 = Task("Test2", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
-    Task task3 = Task("Test3", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE TO DO");
+    task2.status = Status.COMPLEATED;
 
-    Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149), [user]);
+    Task task3 = Task("Test3", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE");
+    task3.status = Status.ACTIVE;
+
+    Task task4 = Task("Test4", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "ASD ASD");
+    Task task5 = Task("Test5", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "MICIO MICIO");
+    Task task6 = Task("Test6", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "FUCK THE POLICE");
+
+    Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149000), [user]);
+    Event event2 = Event("HCI project", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
+    Event event3 = Event("Surprise Birthday", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
+
     event.addTask(task);
     event.addTask(task2);
     event.addTask(task3);
+    event.addTask(task4);
+    event.addTask(task5);
+    event.addTask(task6);
 
-    List<String> events = [json.encode(event)];
+    List<String> events = [json.encode(event), json.encode(event2), json.encode(event3)];
 
     bool setUser = await prefs.setString("TestUser", json.encode(user));
     bool setEvents = await prefs.setStringList("Events", events);
@@ -69,10 +89,27 @@ class _HomePageState extends State<HomePage> {
     return events;
   }
 
+  setTasks(List<Event> events) {
+    userTasks = [];
+    events.forEach((event) {
+      List<Task> allTasks = event.tasks;
+      allTasks.forEach((task) {
+        if (task.user.username == user.username) {
+          userTasks.add(task);
+          if (task.status == Status.COMPLEATED) completedTasks++;
+          else if (task.status == Status.ACTIVE) activeTasks++;
+          else pendingTasks++;
+        }
+      });
+    });
+
+  }
+
 
   Future<String> getData(String username) async {
     this.user = await getUser(username);
     this.events = await getEvents();
+    setTasks(events);
     return "ready";
   }
 
@@ -199,8 +236,8 @@ class _HomePageState extends State<HomePage> {
                           TaskColumn(
                             icon: Icons.alarm,
                             iconBackgroundColor: LightColors.kRed,
-                            title: 'To Do',
-                            subtitle: '5 tasks now. 1 started',
+                            title: 'Pending',
+                            subtitle: '$pendingTasks tasks',
                           ),
                           SizedBox(
                             height: 15.0,
@@ -208,15 +245,37 @@ class _HomePageState extends State<HomePage> {
                           TaskColumn(
                             icon: Icons.replay,
                             iconBackgroundColor: LightColors.kDarkYellow,
-                            title: 'In Progress',
-                            subtitle: '1 tasks now. 1 started',
+                            title: 'Active',
+                            subtitle: '$activeTasks tasks',
                           ),
                           SizedBox(height: 15.0),
                           TaskColumn(
                             icon: Icons.check,
                             iconBackgroundColor: Color.fromRGBO(67, 147, 31, 0.6),
-                            title: 'Done',
-                            subtitle: '18 tasks now. 13 started',
+                            title: 'Completed',
+                            subtitle: '$completedTasks tasks',
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.transparent,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 0.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          subheading('Active Event'),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProjectCreation()),
+                              );
+                            },
+                            child: addIcon(),
                           ),
                         ],
                       ),
@@ -227,76 +286,7 @@ class _HomePageState extends State<HomePage> {
                           horizontal: 20.0, vertical: 10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              subheading('Active Event'),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProjectCreation()),
-                                  );
-                                },
-                                child: addIcon(),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 3.0),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 48,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EventHomePage(title: "ciao")),
-                                    );
-                                  },
-                                  child: generateProjectCard(LightColors.kBlue, 0.5, "ciao", "subtitle"),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: Container(),
-                              ),
-                              Expanded(
-                                flex: 48,
-                                child: generateProjectCard(LightColors.kBlue, 0.5, "ciao", "subtitle"),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 48,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EventHomePage(title: "ciao")),
-                                    );
-                                  },
-                                  child: generateProjectCard(LightColors.kBlue, 0.5, "ciao", "subtitle"),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: Container(),
-                              ),
-                              Expanded(
-                                flex: 48,
-                                child: generateProjectCard(LightColors.kBlue, 0.5, "ciao", "subtitle"),
-                              )
-                            ],
-                          ),
-                        ],
+                        children: build_active_events(),
                       ),
                     ),
                   ],
@@ -305,6 +295,53 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  List<Widget> build_active_events() {
+    List<Widget> list = [];
+    List<Widget> event_cards = [];
+    events.forEach((event) {
+      event_cards.add(build_event_card(event));
+    });
+
+    if (event_cards.length % 2 != 0) event_cards.add(
+        Expanded(
+          flex: 48,
+          child: Container(),
+        )
+    );
+
+    for (var i = 0; i < event_cards.length; i += 2) {
+      list.add(
+        Row(
+          children: <Widget>[
+            event_cards[i],
+            Expanded(
+              flex: 4,
+              child: Container(),
+            ),
+            event_cards[i+1]
+          ],
+        ),
+      );
+    }
+    return list;
+  }
+
+  Widget build_event_card(Event event){
+    return Expanded(
+      flex: 48,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EventHomePage(event: event)),
+          );
+        },
+        child: generateProjectCard(LightColors.kBlue, 0.5, event.name, event.date.toString()),
       ),
     );
   }
