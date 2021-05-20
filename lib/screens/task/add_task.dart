@@ -7,6 +7,10 @@ class AddTaskPage extends StatefulWidget {
   AddTaskPage({Key key, this.title}) : super(key: key);
 
   final String title;
+  TextEditingController controllerTaskName = new TextEditingController();
+  TextEditingController controllerPeople = new TextEditingController();
+  TextEditingController controllerDescription = new TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   _AddTaskPageState createState() => _AddTaskPageState();
@@ -14,22 +18,23 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
 
-  static final _formKey = GlobalKey<FormState>();
-  static TextEditingController controllerTaskName = new TextEditingController();
-  static TextEditingController controllerPeople = new TextEditingController();
-  static TextEditingController controllerDescription = new TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Form(
-          key: _formKey,
+          key: widget.formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
                 maxLines: 1,
                 style: TextStyle(fontSize: 17),
-                controller: controllerTaskName,
+                controller: widget.controllerTaskName,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   prefixIcon: const Icon(
                     Icons.sticky_note_2,
@@ -42,7 +47,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               TextFormField(
                 maxLines: 1,
                 style: TextStyle(fontSize: 17),
-                controller: controllerPeople,
+                controller: widget.controllerPeople,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(
                     Icons.people_alt,
@@ -57,7 +62,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               TextFormField(
                 maxLines: 5,
                 style: TextStyle(fontSize: 13),
-                controller: controllerDescription,
+                controller: widget.controllerDescription,
                 decoration: InputDecoration(
                   hintText: 'Description',
                 ),

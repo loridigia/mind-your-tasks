@@ -65,7 +65,7 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$StatusEnumMap = {
-  Status.COMPLEATED: 'COMPLEATED',
+  Status.COMPLETED: 'COMPLETED',
   Status.ACTIVE: 'ACTIVE',
   Status.PENDING: 'PENDING',
 };

@@ -42,9 +42,9 @@ class _HomePageState extends State<HomePage> {
 
     User user = User("TestUser", "test-email@gmail.com");
     Task task = Task("Test1", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Buy Stuff");
-    task.status = Status.COMPLEATED;
+    task.status = Status.COMPLETED;
     Task task2 = Task("Test2", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
-    task2.status = Status.COMPLEATED;
+    task2.status = Status.COMPLETED;
 
     Task task3 = Task("Test3", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE");
     task3.status = Status.ACTIVE;
@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
       allTasks.forEach((task) {
         if (task.user.username == user.username) {
           userTasks.add(task);
-          if (task.status == Status.COMPLEATED) completedTasks++;
+          if (task.status == Status.COMPLETED) completedTasks++;
           else if (task.status == Status.ACTIVE) activeTasks++;
           else pendingTasks++;
         }

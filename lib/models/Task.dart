@@ -5,7 +5,7 @@ import 'User.dart';
 part 'Task.g.dart';
 
 enum Status {
-  COMPLEATED,
+  COMPLETED,
   ACTIVE,
   PENDING
 }

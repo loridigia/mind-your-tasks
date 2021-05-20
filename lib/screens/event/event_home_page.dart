@@ -86,7 +86,8 @@ class _EventHomePageState extends State<EventHomePage> {
                         fontSize: 20,
                         color: Colors.black
                     ),
-                  ),)
+                  ),
+                  )
                 ]
             ),
             Container(
@@ -225,10 +226,9 @@ class _EventHomePageState extends State<EventHomePage> {
                                             ),
                                             Padding(
                                               padding:
-                                              const EdgeInsets.only(
-                                                  left: 4, bottom: 3),
+                                              const EdgeInsets.only(left: 4, bottom: 3),
                                               child: Text(
-                                                widget.event.date.day.toString() + "-" + widget.event.date.month.toString() + "-" + widget.event.date.year.toString(),
+                                                widget.event.date.day.toString()+"-"+widget.event.date.month.toString()+"-"+widget.event.date.year.toString()+" "+ widget.event.date.hour.toString()+":"+widget.event.date.minute.toString(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontWeight:
@@ -252,8 +252,7 @@ class _EventHomePageState extends State<EventHomePage> {
                         Expanded(
                           flex: 40,
                           child:Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, right: 8, top: 4),
+                              padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
                             child: Column(
                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -281,8 +280,7 @@ class _EventHomePageState extends State<EventHomePage> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 18, bottom: 8),
+                      padding: const EdgeInsets.only(left: 10, right: 10, top: 18, bottom: 8),
                       child: Container(
                         height: 2,
                         decoration: BoxDecoration(
@@ -319,19 +317,18 @@ class _EventHomePageState extends State<EventHomePage> {
                                       padding: const EdgeInsets.only(top: 4),
                                       child: LinearPercentIndicator(
                                         animation: true,
-                                        percent: widget.getTasks(Status.COMPLEATED).length / widget.event.tasks.length,
+                                        percent: widget.getTasks(Status.COMPLETED).length / widget.event.tasks.length,
                                         lineHeight: 5,
                                         width: 90,
                                         linearStrokeCap: LinearStrokeCap.roundAll,
                                         backgroundColor: Colors.grey[100],
-                                        progressColor: Color.fromRGBO(
-                                            67, 147, 31, 1.0),
+                                        progressColor: Color.fromRGBO(67, 147, 31, 1.0),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        widget.getTasks(Status.COMPLEATED).length.toString(),
+                                        widget.getTasks(Status.COMPLETED).length.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
@@ -551,9 +548,16 @@ class _EventHomePageState extends State<EventHomePage> {
       ),
     );
   }
+  
+  Color _getColorFromStatus(Status status) {
+    if (status == Status.COMPLETED) return Color.fromRGBO(67, 147, 31, 1.0);
+    else if (status == Status.ACTIVE) return Color.fromRGBO(246, 197, 15, 1.0);
+    else return Color.fromRGBO(219, 20, 36, 1.0);
+  }
+  
 
   _showTab() {
-    if (cupertinoTabBarIIIValueGetter() == 0) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0), widget.getTasks(Status.COMPLEATED));
+    if (cupertinoTabBarIIIValueGetter() == 0) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0), widget.getTasks(Status.COMPLETED));
     else if (cupertinoTabBarIIIValueGetter() == 1) return showTaskList(Color.fromRGBO(246, 197, 15, 1.0), widget.getTasks(Status.ACTIVE));
     else return showTaskList(Color.fromRGBO(219, 20, 36, 1.0), widget.getTasks(Status.PENDING));
   }
@@ -563,12 +567,12 @@ class _EventHomePageState extends State<EventHomePage> {
     tasks.forEach((element) {
       list.add(
           GestureDetector(
-            onTap: () => _onAlertButtonsPressed(context),
+            onTap: () => _taskDetails(context, element),
             child: TaskContainer(
                 color: color,
                 taskName: element.name,
                 personName: element.user != null ? element.user.username : "Not assigned",
-                date: element.date != null ? element.date.year.toString()+"-"+element.date.month.toString()+"-"+element.date.day.toString() : "No date",
+                date: element.date != null ? element.date.day.toString()+"-"+element.date.month.toString()+"-"+element.date.year.toString()+" "+element.date.hour.toString()+":"+element.date.minute.toString() : "No date",
                 desc: element.description),
           )
       );
@@ -615,7 +619,7 @@ class _EventHomePageState extends State<EventHomePage> {
       );
   }
 
-  _onAlertButtonsPressed(context) {
+  _taskDetails(context, Task task) {
     // Reusable alert style
     var alertStyle = AlertStyle(
       animationType: AnimationType.fromTop,
@@ -630,18 +634,20 @@ class _EventHomePageState extends State<EventHomePage> {
         ),
       ),
       titleStyle: TextStyle(
-        color: Color.fromRGBO(67, 147, 31, 0.8),
+        color: _getColorFromStatus(task.status),
         fontSize: 25,
         fontWeight: FontWeight.w800
       ),
     );
+
+    String statusString = task.status.toString();
 
     // Alert dialog using custom alert style
     Alert(
       context: context,
       style: alertStyle,
       type: AlertType.none,
-      title: "Completed Task",
+      title: task.status.toString().substring(7) +" TASK",
         content: Padding(
               padding: const EdgeInsets.all(2),
               child: Column(
@@ -663,7 +669,7 @@ class _EventHomePageState extends State<EventHomePage> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                                "Buy Coke",
+                                task.name,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20.0,
@@ -691,7 +697,7 @@ class _EventHomePageState extends State<EventHomePage> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                                "Mario Rossi",
+                                task.user != null ? task.user.username : "Not assigned",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20.0,
@@ -719,7 +725,8 @@ class _EventHomePageState extends State<EventHomePage> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                                "13-03-2021 15:30",
+                                task.date != null ?
+                                task.date.day.toString()+"-"+task.date.month.toString()+"-"+task.date.year.toString()+" "+ task.date.hour.toString()+":"+task.date.minute.toString() : "No date",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20.0,
@@ -749,7 +756,7 @@ class _EventHomePageState extends State<EventHomePage> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                                "Description of the task, of course chars must be cut because all of them are too much, but hey here they fits!!",
+                                task.description,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14.0,
@@ -854,22 +861,49 @@ class _EventHomePageState extends State<EventHomePage> {
         ),
       ),
       titleStyle: TextStyle(
-          color: Color.fromRGBO(67, 147, 31, 0.8),
+          color: Colors.blueAccent,
           fontSize: 22,
           fontWeight: FontWeight.w800
       ),
     );
 
     // Alert dialog using custom alert style
+
+    AddTaskPage taskPage = AddTaskPage();
     Alert(
         context: context,
         style: alertStyle,
         type: AlertType.none,
-        title: "Add Completed Task",
-        content: AddTaskPage(),
+        title: "Create new task",
+        content: taskPage,
         buttons: [
           DialogButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => {
+              if (taskPage.formKey.currentState.validate()) {
+                Navigator.pop(context),
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(
+                      SnackBar(
+                          content:
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "New task successfully added",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800
+                                      )
+                                  )
+                                ]
+                              ),
+                        backgroundColor: Colors.green,
+                      )
+                )
+              }
+            },
             child: Text(
               "CREATE TASK",
               style: TextStyle(color: Colors.white, fontSize: 20),
