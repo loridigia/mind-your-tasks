@@ -1,3 +1,4 @@
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,8 @@ class AddTaskPage extends StatefulWidget {
   TextEditingController controllerTaskName = new TextEditingController();
   TextEditingController controllerPeople = new TextEditingController();
   TextEditingController controllerDescription = new TextEditingController();
+  TextEditingController controllerDate = new TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -57,7 +60,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               SizedBox(height: 20),
-              BasicDateTimeField(),
+              dateField(widget.controllerDate),
               SizedBox(height: 20),
               TextFormField(
                 maxLines: 5,
@@ -72,14 +75,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ));
   }
 
-}
-
-class BasicDateTimeField extends StatelessWidget {
-  final format = DateFormat("yyyy-MM-dd HH:mm");
-  @override
-  Widget build(BuildContext context) {
+  Widget dateField(TextEditingController controllerDate) {
     return Column(children: <Widget>[
       DateTimeField(
+        controller: controllerDate,
         decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.access_time,
@@ -87,7 +86,7 @@ class BasicDateTimeField extends StatelessWidget {
           ),
           hintText: 'Event Date & Time',
         ),
-        format: format,
+        format: DateFormat("yyyy-MM-dd HH:mm:ss"),
         onShowPicker: (context, currentValue) async {
           final date = await showDatePicker(
               context: context,

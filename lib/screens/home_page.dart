@@ -80,7 +80,6 @@ class _HomePageState extends State<HomePage> {
   Future<List<Event>> getEvents() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList("Events");
-    debugPrint(list.getRange(0, 1).first);
     List<Event> events = [];
     Set<String> set = list.toSet();
     set.forEach((element) {

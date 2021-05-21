@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:cupertino_tabbar/cupertino_tabbar.dart' as CupertinoTabBar;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
+import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/task/add_task.dart';
 import 'package:mind_your_tasks/screens/task/search_task_page.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
@@ -11,6 +14,7 @@ import 'package:mind_your_tasks/widgets/main_drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/task_container.dart';
 
@@ -901,8 +905,9 @@ class _EventHomePageState extends State<EventHomePage> {
                               ),
                         backgroundColor: Colors.green,
                       )
-                )
-              }
+                ),
+                createTask(taskPage),
+                }
             },
             child: Text(
               "CREATE TASK",
@@ -911,6 +916,31 @@ class _EventHomePageState extends State<EventHomePage> {
           )
         ]).show();
   }
+
+  createTask(AddTaskPage taskPage) async {
+    String taskName = taskPage.controllerTaskName.text;
+    String username = taskPage.controllerPeople.text;
+    String description = taskPage.controllerDescription.text;
+
+    debugPrint(taskPage.controllerDate.text);
+    DateTime date = taskPage.controllerDate.text != "" ? DateTime.parse(taskPage.controllerDate.text) : null;
+
+    User userx = await getUser(username);
+    debugPrint(json.encode(userx));
+    /*
+    User user = username != null ? await getUser(username) : null;
+    Task task = Task(taskName, date, user, description);
+    widget.event.tasks.add(task);
+    */
+  }
+
+  Future<User> getUser(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String data = prefs.getString(username);
+    User user = User.fromJson(json.decode(data));
+    return user;
+  }
+
 
   Text subheading(String title) {
     return Text(
@@ -922,7 +952,6 @@ class _EventHomePageState extends State<EventHomePage> {
           letterSpacing: 1.2),
     );
   }
-
 
 }
 
