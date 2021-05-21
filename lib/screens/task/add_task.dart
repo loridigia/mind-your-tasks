@@ -1,5 +1,6 @@
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,24 +48,43 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               SizedBox(height: 20),
-              TextFormField(
-                maxLines: 1,
-                style: TextStyle(fontSize: 17),
-                controller: widget.controllerPeople,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(
-                    Icons.people_alt,
-                    color: Colors.grey,
+              TypeAheadFormField(
+                textFieldConfiguration: TextFieldConfiguration(
+                    controller: widget.controllerPeople,
+                    autofocus: false,
+                    style: TextStyle(fontSize: 17),
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.people_alt,
+                        color: Colors.grey,
+                      ),
+                      hintText: 'Assigned to',
+                    ),
                   ),
-                  hintText: 'Assigned to',
-                ),
+                suggestionsCallback: (pattern) async {
+                  return ["TestUser"];
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    leading: Icon(Icons.person),
+                    title: Text(suggestion),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  widget.controllerPeople.text = suggestion;
+                },
+                validator: (value) {
+                  if (value != "" && value != "TestUser") {
+                    return 'Please select a valid user';
+                  }
+                },
               ),
               SizedBox(height: 20),
               dateField(widget.controllerDate),
               SizedBox(height: 20),
               TextFormField(
                 maxLines: 5,
-                style: TextStyle(fontSize: 13),
+                style: TextStyle(fontSize: 17),
                 controller: widget.controllerDescription,
                 decoration: InputDecoration(
                   hintText: 'Description',

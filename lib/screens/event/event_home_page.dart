@@ -925,13 +925,9 @@ class _EventHomePageState extends State<EventHomePage> {
     debugPrint(taskPage.controllerDate.text);
     DateTime date = taskPage.controllerDate.text != "" ? DateTime.parse(taskPage.controllerDate.text) : null;
 
-    User userx = await getUser(username);
-    debugPrint(json.encode(userx));
-    /*
     User user = username != null ? await getUser(username) : null;
     Task task = Task(taskName, date, user, description);
     widget.event.tasks.add(task);
-    */
   }
 
   Future<User> getUser(String username) async {
