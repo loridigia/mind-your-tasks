@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
+import 'package:mind_your_tasks/screens/home_page.dart';
 import 'package:mind_your_tasks/screens/task/add_task.dart';
 import 'package:mind_your_tasks/screens/task/search_task_page.dart';
+import 'package:mind_your_tasks/screens/task/task_details.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:mind_your_tasks/widgets/main_drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -16,6 +18,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../storage_utils.dart';
 import '../../widgets/task_container.dart';
 
 
@@ -55,7 +58,11 @@ class _EventHomePageState extends State<EventHomePage> {
           backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage()),
+            ),
           ),
           elevation: 0,
           actions: <Widget>[
@@ -644,7 +651,7 @@ class _EventHomePageState extends State<EventHomePage> {
       ),
     );
 
-    String statusString = task.status.toString();
+    TaskDetails taskDetails = TaskDetails(task: task);
 
     // Alert dialog using custom alert style
     Alert(
@@ -652,138 +659,72 @@ class _EventHomePageState extends State<EventHomePage> {
       style: alertStyle,
       type: AlertType.none,
       title: task.status.toString().substring(7) +" TASK",
-        content: Padding(
-              padding: const EdgeInsets.all(2),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: <Widget>[
-                            Icon(Icons.sticky_note_2, size: 25)
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 8,
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                                task.name,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w500)
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: <Widget>[
-                            Icon(Icons.assignment_ind, size: 25)
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 8,
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                                task.user != null ? task.user.username : "Not assigned",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w500)
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: <Widget>[
-                            Icon(Icons.access_time, size: 25)
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 8,
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                                task.date != null ?
-                                task.date.day.toString()+"-"+task.date.month.toString()+"-"+task.date.year.toString()+" "+ task.date.hour.toString()+":"+task.date.minute.toString() : "No date",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w500)
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                    child: Container(
-                      height: 2,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(212, 212, 212, 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                                task.description,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w300)
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+        content: taskDetails,
         buttons: [
           DialogButton(
             onPressed: () => Navigator.pop(context),
+            color: Colors.grey,
             child: Text(
-              "ASSIGN TO ME",
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          DialogButton(
+            onPressed: () async => {
+              task.status = convertStatus(taskDetails.controllerStatus.text),
+              task.user = taskDetails.controllerPeople.text != null ?
+                          await StorageUtils.getUser(taskDetails.controllerPeople.text) : null,
+              updateTask(task),
+              await StorageUtils.updateEvent(widget.event),
+              Navigator.pop(context),
+              setState(() {}),
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                  SnackBar(
+                    content:
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              "Task correctly modified",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800
+                              )
+                          )
+                        ]
+                    ),
+                    backgroundColor: Colors.green,
+                  )
+              ),
+            },
+            child: Text(
+              "Apply",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           )
         ]).show();
   }
+
+  updateTask(Task task) {
+    List<Task> newList = [];
+    widget.event.tasks.forEach((element) {
+      if (element.UUID == task.UUID) newList.add(task);
+      else newList.add(element);
+    });
+    widget.event.tasks = newList;
+  }
+
+
+  Status convertStatus(String statusString) {
+    if (statusString == null || statusString == "") return null;
+    if (statusString == "COMPLETED") return Status.COMPLETED;
+    else if (statusString == "ACTIVE") return Status.ACTIVE;
+    else return Status.PENDING;
+  }
+
 
   _onAddPeople(context) {
     // Reusable alert style
@@ -885,6 +826,7 @@ class _EventHomePageState extends State<EventHomePage> {
             onPressed: () => {
               if (taskPage.formKey.currentState.validate()) {
                 Navigator.pop(context),
+                setState(() {}),
                 ScaffoldMessenger.of(context)
                     .showSnackBar(
                       SnackBar(
@@ -925,17 +867,12 @@ class _EventHomePageState extends State<EventHomePage> {
     debugPrint(taskPage.controllerDate.text);
     DateTime date = taskPage.controllerDate.text != "" ? DateTime.parse(taskPage.controllerDate.text) : null;
 
-    User user = username != null ? await getUser(username) : null;
+    User user = username != null ? await StorageUtils.getUser(username) : null;
     Task task = Task(taskName, date, user, description);
     widget.event.tasks.add(task);
+    bool updated = await StorageUtils.updateEvent(widget.event);
   }
 
-  Future<User> getUser(String username) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(username);
-    User user = User.fromJson(json.decode(data));
-    return user;
-  }
 
 
   Text subheading(String title) {

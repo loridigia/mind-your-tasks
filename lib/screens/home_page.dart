@@ -8,6 +8,7 @@ import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/calendar_page.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
 import 'package:mind_your_tasks/screens/project_creation.dart';
+import 'package:mind_your_tasks/storage_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:mind_your_tasks/widgets/task_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,58 +35,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    setInitStuff();
-  }
-
-  setInitStuff() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    User user = User("TestUser", "test-email@gmail.com");
-    Task task = Task("Test1", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Buy Stuff");
-    task.status = Status.COMPLETED;
-    Task task2 = Task("Test2", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
-    task2.status = Status.COMPLETED;
-
-    Task task3 = Task("Test3", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE");
-    task3.status = Status.ACTIVE;
-
-    Task task4 = Task("Test4", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "ASD ASD");
-    Task task5 = Task("Test5", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "MICIO MICIO");
-    Task task6 = Task("Test6", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "FUCK THE POLICE");
-
-    Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149000), [user]);
-    Event event2 = Event("HCI project", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
-    Event event3 = Event("Surprise Birthday", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
-
-    event.addTask(task);
-    event.addTask(task2);
-    event.addTask(task3);
-    event.addTask(task4);
-    event.addTask(task5);
-    event.addTask(task6);
-
-    List<String> events = [json.encode(event), json.encode(event2), json.encode(event3)];
-
-    bool setUser = await prefs.setString("TestUser", json.encode(user));
-    bool setEvents = await prefs.setStringList("Events", events);
-  }
-
-  Future<User> getUser(String username) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(username);
-    User user = User.fromJson(json.decode(data));
-    return user;
-  }
-
-  Future<List<Event>> getEvents() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> list = prefs.getStringList("Events");
-    List<Event> events = [];
-    Set<String> set = list.toSet();
-    set.forEach((element) {
-      events.add(Event.fromJson(jsonDecode(element)));
-    });
-    return events;
   }
 
   setTasks(List<Event> events) {
@@ -106,8 +55,8 @@ class _HomePageState extends State<HomePage> {
 
 
   Future<String> getData(String username) async {
-    this.user = await getUser(username);
-    this.events = await getEvents();
+    this.user = await StorageUtils.getUser(username);
+    this.events = await StorageUtils.getEvents();
     setTasks(events);
     return "ready";
   }

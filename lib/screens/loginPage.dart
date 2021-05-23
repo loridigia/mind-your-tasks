@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mind_your_tasks/models/Event.dart';
+import 'package:mind_your_tasks/models/Task.dart';
+import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/home_page.dart';
 import 'package:mind_your_tasks/screens/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/bezierContainer.dart';
 
@@ -14,6 +20,47 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    setInitStuff();
+  }
+
+  setInitStuff() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    User user = User("TestUser", "test-email@gmail.com");
+    Task task = Task("Test1", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Buy Stuff");
+    task.status = Status.COMPLETED;
+    Task task2 = Task("Test2", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
+    task2.status = Status.COMPLETED;
+
+    Task task3 = Task("Test3", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE");
+    task3.status = Status.ACTIVE;
+
+    Task task4 = Task("Test4", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "ASD ASD");
+    Task task5 = Task("Test5", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "MICIO MICIO");
+    Task task6 = Task("Test6", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "FUCK THE POLICE");
+
+    Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149000), [user]);
+    Event event2 = Event("HCI project", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
+    Event event3 = Event("Surprise Birthday", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
+
+    event.addTask(task);
+    event.addTask(task2);
+    event.addTask(task3);
+    event.addTask(task4);
+    event.addTask(task5);
+    event.addTask(task6);
+
+    List<String> events = [json.encode(event), json.encode(event2), json.encode(event3)];
+
+    bool setUser = await prefs.setString("TestUser", json.encode(user));
+    bool setEvents = await prefs.setStringList("Events", events);
+  }
+
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
