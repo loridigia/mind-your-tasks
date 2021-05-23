@@ -6,12 +6,11 @@ import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/calendar_page.dart';
+import 'package:mind_your_tasks/screens/event/add_event.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
-import 'package:mind_your_tasks/screens/project_creation.dart';
 import 'package:mind_your_tasks/storage_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
-import 'package:mind_your_tasks/widgets/task_container.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import '../widgets/main_drawer.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:mind_your_tasks/widgets/task_column.dart';
@@ -49,10 +48,9 @@ class _HomePageState extends State<HomePage> {
           else pendingTasks++;
         }
       });
-    });
-
+    }
+    );
   }
-
 
   Future<String> getData(String username) async {
     this.user = await StorageUtils.getUser(username);
@@ -217,11 +215,7 @@ class _HomePageState extends State<HomePage> {
                           subheading('Active Event'),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProjectCreation()),
-                              );
+                              _onAddEvent(context);
                             },
                             child: addIcon(),
                           ),
@@ -245,6 +239,83 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  _onAddEvent(context) {
+    // Reusable alert style
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromRight,
+      isCloseButton: true,
+      isOverlayTapDismiss: false,
+      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+      animationDuration: Duration(milliseconds: 200),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: BorderSide(
+          color: Colors.white,
+        ),
+      ),
+      titleStyle: TextStyle(
+          color: Colors.blueAccent,
+          fontSize: 22,
+          fontWeight: FontWeight.w800
+      ),
+    );
+
+    // Alert dialog using custom alert style
+
+    AddEventPage eventPage = AddEventPage();
+    Alert(
+        context: context,
+        style: alertStyle,
+        type: AlertType.none,
+        title: "Create new Event",
+        content: eventPage,
+        buttons: [
+          DialogButton(
+            onPressed: () => {
+              if (eventPage.formKey.currentState.validate()) {
+                Navigator.pop(context),
+                setState(() {}),
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(
+                    SnackBar(
+                      content:
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                                "New event created",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w800
+                                )
+                            )
+                          ]
+                      ),
+                      backgroundColor: Colors.green,
+                    )
+                ),
+                createEvent(eventPage),
+              }
+            },
+            child: Text(
+              "CREATE EVENT",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
+  }
+
+  createEvent(AddEventPage eventPage) async {
+
+    String eventName = eventPage.controllerEventName.text;
+    DateTime date = eventPage.controllerDate.text != "" ? DateTime.parse(eventPage.controllerDate.text) : null;
+
+    Event event = Event(eventName, date, [user]);
+    bool updated = await StorageUtils.addNewEvent(event);
   }
 
   List<Widget> build_active_events() {
@@ -289,7 +360,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (context) => EventHomePage(event: event)),
           );
         },
-        child: generateProjectCard(LightColors.kBlue, 0.5, event.name, event.date.toString()),
+        child: generateProjectCard(LightColors.kBlue, 0.5, event.name, event.date),
       ),
     );
   }
@@ -317,11 +388,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  static ActiveProjectsCard generateProjectCard(color, donePercent, title, subtitle) {
+  static ActiveProjectsCard generateProjectCard(color, donePercent, title, date) {
     return ActiveProjectsCard(
         cardColor: color,
         loadingPercent: donePercent,
         title: title,
-        subtitle: subtitle);
+        date: date);
   }
 }

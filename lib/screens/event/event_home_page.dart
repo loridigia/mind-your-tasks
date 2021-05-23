@@ -92,7 +92,7 @@ class _EventHomePageState extends State<EventHomePage> {
                     style: TextStyle(
                         fontWeight:
                         FontWeight.w700,
-                        fontSize: 20,
+                        fontSize: 25,
                         color: Colors.black
                     ),
                   ),
@@ -237,7 +237,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                                     padding:
                                                     const EdgeInsets.only(left: 4, bottom: 3),
                                                     child: Text(
-                                                      widget.event.date.day.toString()+"-"+widget.event.date.month.toString()+"-"+widget.event.date.year.toString()+" "+ widget.event.date.hour.toString()+":"+widget.event.date.minute.toString(),
+                                                      widget.event.date != null ? widget.event.date.day.toString()+"-"+widget.event.date.month.toString()+"-"+widget.event.date.year.toString()+" "+ widget.event.date.hour.toString()+":"+widget.event.date.minute.toString() : "No date",
                                                       textAlign: TextAlign.center,
                                                       style: TextStyle(
                                                           fontWeight:
@@ -460,16 +460,34 @@ class _EventHomePageState extends State<EventHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                          "Task list",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight:
-                              FontWeight.w700,
-                              fontSize: 20,
-                              color: Colors.black
+                      Expanded(child:
+                      GestureDetector(
+                        onTap: () => _onAddTask(context),
+                        child: Icon(Icons.note_add, size: 30, color: Colors.black),
+                      ),
+                      ),
+                      Expanded(
+                          child: Text(
+                            "Task list",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight:
+                                FontWeight.w700,
+                                fontSize: 25,
+                                color: Colors.black
+                            ),
                           ),
-                        ),
+                      ),
+                      Expanded(child:GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks,)),
+                            );
+                          },
+                          child: Icon(Icons.arrow_forward_ios, size: 30, color: Colors.black)
+                      )),
                     ]
                 ),
               ),
@@ -481,7 +499,7 @@ class _EventHomePageState extends State<EventHomePage> {
                   ),
                   width: width,
                   child: DefaultTabController(
-                    length: 5,
+                    length: 3,
                     child: Scaffold(
                       appBar: PreferredSize(
                         preferredSize: Size.fromHeight(55.0),
@@ -496,20 +514,6 @@ class _EventHomePageState extends State<EventHomePage> {
                             Tab(icon: Icon(Icons.check, size: 40, color: Color.fromRGBO(67, 147, 31, 1.0))),
                             Tab(icon: Icon(Icons.replay, size: 35, color: Color.fromRGBO(246, 197, 15, 1.0))),
                             Tab(icon: Icon(Icons.alarm, size: 35, color: Color.fromRGBO(219, 20, 36, 1.0))),
-                            GestureDetector(
-                              onTap: () => _onAddTask(context),
-                              child: Icon(Icons.note_add, size: 30, color: Colors.black),
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SearchTaskPage(tasks: widget.event.tasks,)),
-                                  );
-                                },
-                                child: Icon(Icons.arrow_forward_ios, size: 30, color: Colors.black)
-                            )
                           ],
                         ),
                       ),
@@ -519,8 +523,6 @@ class _EventHomePageState extends State<EventHomePage> {
                           showTaskList(Color.fromRGBO(67, 147, 31, 1.0), widget.getTasks(Status.COMPLETED)),
                           showTaskList(Color.fromRGBO(246, 197, 15, 1.0), widget.getTasks(Status.ACTIVE)),
                           showTaskList(Color.fromRGBO(219, 20, 36, 1.0), widget.getTasks(Status.PENDING)),
-                          Icon(Icons.directions_bike),
-                          Icon(Icons.directions_bike)
                         ],
                       ),
                     ),

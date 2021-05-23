@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mind_your_tasks/screens/event_creation/information.dart';
 
-import 'event_creation/personal.dart';
 
 class ProjectCreation extends StatefulWidget {
   @override

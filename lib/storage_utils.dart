@@ -19,6 +19,15 @@ abstract class StorageUtils {
     return await prefs.setStringList("Events", updated);
   }
 
+  static Future<bool> addNewEvent(Event event) async {
+    List<Event> events = await getEvents();
+    List<String> eventsString = events.map((e) => jsonEncode(e));
+    events.add(event);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setStringList("Events", eventsString);
+  }
+
   static Future<Event> getEventByTask(Task task) async {
     List<Event> events = await getEvents();
     events.forEach((event) {

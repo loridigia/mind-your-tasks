@@ -136,7 +136,7 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                             color: TaskUtils.getColorFromStatus(widget.tasks[index].status),
                             taskName: task.name,
                             personName: task.user != null ? task.user.username : "Not assigned",
-                            date: task.date.year.toString()+"-"+task.date.month.toString()+"-"+task.date.day.toString()+" "+task.date.hour.toString()+":"+task.date.minute.toString(),
+                            date: task.date != null ? task.date.year.toString()+"-"+task.date.month.toString()+"-"+task.date.day.toString()+" "+task.date.hour.toString()+":"+task.date.minute.toString() : "No date",
                             desc: task.description),
                       );
                   },

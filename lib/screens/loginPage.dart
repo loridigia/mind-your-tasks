@@ -45,7 +45,8 @@ class _LoginPageState extends State<LoginPage> {
 
     Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149000), [user]);
     Event event2 = Event("HCI project", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
-    Event event3 = Event("Surprise Birthday", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
+    Event event3 = Event("Mario B-Day", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
+    Event event4 = Event("House", null, [user]);
 
     event.addTask(task);
     event.addTask(task2);
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     event.addTask(task5);
     event.addTask(task6);
 
-    List<String> events = [json.encode(event), json.encode(event2), json.encode(event3)];
+    List<String> events = [json.encode(event), json.encode(event2), json.encode(event3), json.encode(event4)];
 
     bool setUser = await prefs.setString("TestUser", json.encode(user));
     bool setEvents = await prefs.setStringList("Events", events);

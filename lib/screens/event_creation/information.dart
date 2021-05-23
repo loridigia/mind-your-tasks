@@ -14,13 +14,10 @@ class Personal extends StatefulWidget {
 class PersonalState extends State<Personal> {
   static final formKey = GlobalKey<FormState>();
   static TextEditingController controllerEventName = new TextEditingController();
-  static TextEditingController controllerLastName = new TextEditingController();
   static TextEditingController controllerEventDate = new TextEditingController();
-  static TextEditingController controllerGender = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
         child: Form(
           key: formKey,
@@ -63,7 +60,7 @@ class BasicDateTimeField extends StatelessWidget {
       DateTimeField(
         decoration: InputDecoration(
           prefixIcon: const Icon(
-            Icons.paste,
+            Icons.access_time,
             color: Colors.grey,
           ),
           hintText: 'Event Date & Time',

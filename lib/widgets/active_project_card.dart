@@ -5,13 +5,13 @@ class ActiveProjectsCard extends StatelessWidget {
   final Color cardColor;
   final double loadingPercent;
   final String title;
-  final String subtitle;
+  final DateTime date;
 
   ActiveProjectsCard({
     this.cardColor,
     this.loadingPercent,
     this.title,
-    this.subtitle,
+    this.date,
   });
 
   @override
@@ -40,7 +40,7 @@ class ActiveProjectsCard extends StatelessWidget {
                             title,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.w700)
                         ),
                       ],
@@ -59,7 +59,7 @@ class ActiveProjectsCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                            subtitle,
+                            date != null ? date.day.toString()+"-"+date.month.toString()+"-"+date.day.toString()+"  "+date.hour.toString()+":"+date.minute.toString() : "",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11.0,
