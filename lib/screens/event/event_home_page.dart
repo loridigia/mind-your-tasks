@@ -51,7 +51,7 @@ class _EventHomePageState extends State<EventHomePage> {
       //backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(30.0),
+        preferredSize: Size.fromHeight(35.0),
         child: AppBar(
           backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
           leading: IconButton(
@@ -65,12 +65,22 @@ class _EventHomePageState extends State<EventHomePage> {
           elevation: 0,
           actions: <Widget>[
             Padding(
+                padding: EdgeInsets.only(right: 130.0, top: 10),
+                child: GestureDetector(
+                  onTap: () {_onCloseEvent(context);},
+                  child: Icon(
+                    Icons.remove_circle_outline,
+                    color: Color.fromRGBO(78, 78, 78, 1.0),
+                  ),
+                )
+            ),
+            Padding(
                 padding: EdgeInsets.only(right: 20.0, top: 10),
                 child: GestureDetector(
                   onTap: () {_onAddPeople(context);},
                   child: Icon(
-                      Icons.person_add,
-                      color: Colors.black,
+                    Icons.person_add,
+                    color: Colors.black,
                   ),
                 )
             ),
@@ -460,11 +470,11 @@ class _EventHomePageState extends State<EventHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Expanded(child:
-                      GestureDetector(
-                        onTap: () => _onAddTask(context),
-                        child: Icon(Icons.note_add, size: 30, color: Colors.black),
-                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _onAddTask(context),
+                          child: Icon(Icons.note_add, size: 30, color: Colors.black),
+                        ),
                       ),
                       Expanded(
                           child: Text(
@@ -483,7 +493,7 @@ class _EventHomePageState extends State<EventHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks,)),
+                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks)),
                             );
                           },
                           child: Icon(Icons.arrow_forward_ios, size: 30, color: Colors.black)
@@ -508,12 +518,18 @@ class _EventHomePageState extends State<EventHomePage> {
                         foregroundColor: Colors.black,
                         elevation: 0,
                         bottom: TabBar(
+                          labelStyle: TextStyle(
+                            fontSize: 18
+                          ),
                           labelColor: Colors.black,
                           indicatorColor: Colors.blueAccent,
                           tabs: [
-                            Tab(icon: Icon(Icons.check, size: 40, color: Color.fromRGBO(67, 147, 31, 1.0))),
-                            Tab(icon: Icon(Icons.replay, size: 35, color: Color.fromRGBO(246, 197, 15, 1.0))),
-                            Tab(icon: Icon(Icons.alarm, size: 35, color: Color.fromRGBO(219, 20, 36, 1.0))),
+                            Tab(text: "Completed"),
+                            Tab(text: "Active"),
+                            Tab(text: "Pending"),
+                            //Tab(icon: Icon(Icons.check, size: 40, color: Color.fromRGBO(67, 147, 31, 1.0))),
+                            //Tab(icon: Icon(Icons.replay, size: 35, color: Color.fromRGBO(246, 197, 15, 1.0))),
+                            //Tab(icon: Icon(Icons.alarm, size: 35, color: Color.fromRGBO(219, 20, 36, 1.0))),
                           ],
                         ),
                       ),
@@ -635,6 +651,74 @@ class _EventHomePageState extends State<EventHomePage> {
         ]).show();
   }
 
+  _onCloseEvent(context) {
+    // Reusable alert style
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromTop,
+      isCloseButton: false,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+      animationDuration: Duration(milliseconds: 200),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: BorderSide(
+          color: Colors.white,
+        ),
+      ),
+      titleStyle: TextStyle(
+          color: Colors.red,
+          fontSize: 22,
+          fontWeight: FontWeight.w800
+      ),
+    );
+
+    // Alert dialog using custom alert style
+    Alert(
+        context: context,
+        style: alertStyle,
+        type: AlertType.none,
+        title: "Close this event",
+        content: closeEvent(),
+        buttons: [
+          DialogButton(
+            color: Colors.grey,
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "CANCEL",
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+          ),
+          DialogButton(
+            color: Colors.red,
+            onPressed: () => {
+              widget.event.ended = true,
+              StorageUtils.updateEvent(widget.event),
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage()),
+                  )
+            },
+            child: Text(
+              "CLOSE EVENT",
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+          )
+        ]).show();
+  }
+
+  closeEvent() {
+    return Container(
+      child: Column(
+        children: [
+          Text(
+            "This operation is not reversable, this event will be closed for all partecipants, do you want to close this event?",
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
 
 
   _onAddPeople(context) {

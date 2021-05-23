@@ -23,7 +23,7 @@ class SearchTaskPage extends StatefulWidget {
 class _SearchTaskPageState extends State<SearchTaskPage> {
   @override
   Widget build(BuildContext context) {
-    int tasksNum = widget.tasks.length;
+    List<Task> filteredTask = [];
     return Scaffold(
       backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       appBar: PreferredSize(
@@ -67,6 +67,16 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                                 ),
                                 hintText: 'Task Name',
                               ),
+                              onChanged: (string) {
+                                setState(() {
+                                  filteredTask = widget.tasks
+                                      .where((u) => (u.name
+                                      .toLowerCase()
+                                      .contains(string.toLowerCase())))
+                                      .toList();
+                                });
+                                debugPrint(filteredTask.length.toString());
+                              },
                             ),
                           ),
                           Expanded(
@@ -122,18 +132,18 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
               ),
               Flexible(
                 child: GridView.builder(
-                  itemCount: tasksNum,
+                  itemCount: filteredTask.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 4.0,
                       mainAxisSpacing: 4.0
                   ),
                   itemBuilder: (BuildContext context, int index){
-                    Task task = widget.tasks[index];
+                    Task task = filteredTask[index];
                     return  GestureDetector(
                         onTap: () => _taskDetails(context, task),
                         child: TaskContainer(
-                            color: TaskUtils.getColorFromStatus(widget.tasks[index].status),
+                            color: TaskUtils.getColorFromStatus(filteredTask[index].status),
                             taskName: task.name,
                             personName: task.user != null ? task.user.username : "Not assigned",
                             date: task.date != null ? task.date.year.toString()+"-"+task.date.month.toString()+"-"+task.date.day.toString()+" "+task.date.hour.toString()+":"+task.date.minute.toString() : "No date",

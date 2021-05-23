@@ -22,7 +22,8 @@ Event _$EventFromJson(Map<String, dynamic> json) {
         ?.toList()
     ..creationTime = json['creationTime'] == null
         ? null
-        : DateTime.parse(json['creationTime'] as String);
+        : DateTime.parse(json['creationTime'] as String)
+    ..ended = json['ended'] as bool;
 }
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
@@ -32,4 +33,5 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'tasks': instance.tasks?.map((e) => e?.toJson())?.toList(),
       'users': instance.users?.map((e) => e?.toJson())?.toList(),
       'creationTime': instance.creationTime?.toIso8601String(),
+      'ended': instance.ended,
     };

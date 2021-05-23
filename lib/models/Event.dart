@@ -14,6 +14,7 @@ class Event {
   List<Task> tasks = [];
   List<User> users;
   DateTime creationTime;
+  bool ended = false;
 
   Event(this.name, this.date, this.users) {
     this.UUID = Uuid().v4();

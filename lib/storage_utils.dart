@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/Event.dart';
@@ -21,8 +22,10 @@ abstract class StorageUtils {
 
   static Future<bool> addNewEvent(Event event) async {
     List<Event> events = await getEvents();
-    List<String> eventsString = events.map((e) => jsonEncode(e));
+    List<String> eventsString = [];
     events.add(event);
+    events.forEach((element) {eventsString.add(json.encode(element));
+    });
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setStringList("Events", eventsString);

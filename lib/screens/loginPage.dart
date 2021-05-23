@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149000), [user]);
     Event event2 = Event("HCI project", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
     Event event3 = Event("Mario B-Day", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
+    event3.ended = true;
     Event event4 = Event("House", null, [user]);
 
     event.addTask(task);

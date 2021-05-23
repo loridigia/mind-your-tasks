@@ -8,6 +8,7 @@ import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/calendar_page.dart';
 import 'package:mind_your_tasks/screens/event/add_event.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
+import 'package:mind_your_tasks/screens/task/search_task_page.dart';
 import 'package:mind_your_tasks/storage_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   User user;
   List<Event> events;
+  List<Event> activeEvents;
   List<Task> userTasks;
   var completedTasks = 0;
   var activeTasks = 0;
@@ -38,6 +40,9 @@ class _HomePageState extends State<HomePage> {
 
   setTasks(List<Event> events) {
     userTasks = [];
+    completedTasks = 0;
+    activeTasks = 0;
+    pendingTasks = 0;
     events.forEach((event) {
       List<Task> allTasks = event.tasks;
       allTasks.forEach((task) {
@@ -55,7 +60,12 @@ class _HomePageState extends State<HomePage> {
   Future<String> getData(String username) async {
     this.user = await StorageUtils.getUser(username);
     this.events = await StorageUtils.getEvents();
-    setTasks(events);
+    this.activeEvents = [];
+    events.forEach((element) {
+      if (!element.ended) activeEvents.add(element);
+    });
+    debugPrint(events.length.toString());
+    setTasks(activeEvents);
     return "ready";
   }
 
@@ -163,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CalendarPage()),
+                                        builder: (context) => SearchTaskPage(tasks: userTasks)),
                                   );
                                 },
                                 child: CircleAvatar(
@@ -276,7 +286,6 @@ class _HomePageState extends State<HomePage> {
             onPressed: () => {
               if (eventPage.formKey.currentState.validate()) {
                 Navigator.pop(context),
-                setState(() {}),
                 ScaffoldMessenger.of(context)
                     .showSnackBar(
                     SnackBar(
@@ -299,6 +308,7 @@ class _HomePageState extends State<HomePage> {
                     )
                 ),
                 createEvent(eventPage),
+                setState(() {}),
               }
             },
             child: Text(
@@ -309,19 +319,19 @@ class _HomePageState extends State<HomePage> {
         ]).show();
   }
 
-  createEvent(AddEventPage eventPage) async {
+  Future<bool> createEvent(AddEventPage eventPage) async {
 
     String eventName = eventPage.controllerEventName.text;
     DateTime date = eventPage.controllerDate.text != "" ? DateTime.parse(eventPage.controllerDate.text) : null;
 
     Event event = Event(eventName, date, [user]);
-    bool updated = await StorageUtils.addNewEvent(event);
+    return await StorageUtils.addNewEvent(event);
   }
 
   List<Widget> build_active_events() {
     List<Widget> list = [];
     List<Widget> event_cards = [];
-    events.forEach((event) {
+    activeEvents.forEach((event) {
       event_cards.add(build_event_card(event));
     });
 
