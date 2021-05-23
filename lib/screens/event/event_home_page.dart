@@ -11,6 +11,7 @@ import 'package:mind_your_tasks/screens/home_page.dart';
 import 'package:mind_your_tasks/screens/task/add_task.dart';
 import 'package:mind_your_tasks/screens/task/search_task_page.dart';
 import 'package:mind_your_tasks/screens/task/task_details.dart';
+import 'package:mind_your_tasks/screens/task/tasks_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:mind_your_tasks/widgets/main_drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -42,9 +43,6 @@ class EventHomePage extends StatefulWidget {
 
 class _EventHomePageState extends State<EventHomePage> {
 
-  int cupertinoTabBarIIIValue = 0;
-  int cupertinoTabBarIIIValueGetter() => cupertinoTabBarIIIValue;
-  
   @override
   Widget build(BuildContext context) {
     double percentage = 50/100;
@@ -102,476 +100,439 @@ class _EventHomePageState extends State<EventHomePage> {
                 ]
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                height: 280,
-                width: width,
-                child: Column(
-                  children: <Widget>[
-                    Row(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    height: 280,
+                    width: width,
+                    child: Column(
                       children: <Widget>[
-                        Expanded(
-                          flex: 60,
-                          child:Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Container(
-                                    height: 45,
-                                    width: 2,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blueAccent.withOpacity(0.5),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0)),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 60,
+                              child:Padding(
+                                padding: const EdgeInsets.only(left: 8, right: 8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Row(
                                       children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 4, bottom: 2),
-                                          child: Text(
-                                            'Partecipants',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                              letterSpacing: -0.1,
-                                              color: Colors.blueAccent,
-                                            ),
+                                        Container(
+                                          height: 45,
+                                          width: 2,
+                                          decoration: BoxDecoration(
+                                            color: Colors.blueAccent.withOpacity(0.5),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4.0)),
                                           ),
                                         ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(
-                                              width: 23,
-                                              height: 23,
-                                              child: Icon(
-                                                Icons.people_alt,
-                                                color: Colors.blueAccent,
-                                                size: 20,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(
-                                                  left: 4, bottom: 3),
-                                              child: Text(
-                                                widget.event.users.length.toString(),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontWeight:
-                                                  FontWeight.w600,
-                                                  fontSize: 16,
-                                                  color: Colors.blueAccent
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Container(
-                                    height: 45,
-                                    width: 2,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.withOpacity(0.5),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0)),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 4, bottom: 2),
-                                          child: Text(
-                                            'Date',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                              letterSpacing: -0.1,
-                                              color: Color.fromRGBO(67, 147, 31, 0.8),
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(
-                                              width: 23,
-                                              height: 23,
-                                              child: Icon(
-                                                Icons.access_time,
-                                                color: Color.fromRGBO(67, 147, 31, 0.8),
-                                                size: 20,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(left: 4, bottom: 3),
-                                              child: Text(
-                                                widget.event.date.day.toString()+"-"+widget.event.date.month.toString()+"-"+widget.event.date.year.toString()+" "+ widget.event.date.hour.toString()+":"+widget.event.date.minute.toString(),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.w600,
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 4, bottom: 2),
+                                                child: Text(
+                                                  'Partecipants',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
                                                     fontSize: 16,
-                                                    color: Color.fromRGBO(67, 147, 31, 0.8)
+                                                    letterSpacing: -0.1,
+                                                    color: Colors.blueAccent,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    width: 23,
+                                                    height: 23,
+                                                    child: Icon(
+                                                      Icons.people_alt,
+                                                      color: Colors.blueAccent,
+                                                      size: 20,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        left: 4, bottom: 3),
+                                                    child: Text(
+                                                      widget.event.users.length.toString(),
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.w600,
+                                                          fontSize: 16,
+                                                          color: Colors.blueAccent
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
-                                  )
-                                ],
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                          height: 45,
+                                          width: 2,
+                                          decoration: BoxDecoration(
+                                            color: Colors.green.withOpacity(0.5),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4.0)),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 4, bottom: 2),
+                                                child: Text(
+                                                  'Date',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 16,
+                                                    letterSpacing: -0.1,
+                                                    color: Color.fromRGBO(67, 147, 31, 0.8),
+                                                  ),
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    width: 23,
+                                                    height: 23,
+                                                    child: Icon(
+                                                      Icons.access_time,
+                                                      color: Color.fromRGBO(67, 147, 31, 0.8),
+                                                      size: 20,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(left: 4, bottom: 3),
+                                                    child: Text(
+                                                      widget.event.date.day.toString()+"-"+widget.event.date.month.toString()+"-"+widget.event.date.year.toString()+" "+ widget.event.date.hour.toString()+":"+widget.event.date.minute.toString(),
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.w600,
+                                                          fontSize: 16,
+                                                          color: Color.fromRGBO(67, 147, 31, 0.8)
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 40,
+                              child:Padding(
+                                padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    CircularPercentIndicator(
+                                      radius: 120.0,
+                                      lineWidth: 10.0,
+                                      animation: true,
+                                      percent: percentage,
+                                      center: Text(
+                                        "50%",
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black),
+                                      ),
+                                      backgroundColor: Colors.grey[100],
+                                      circularStrokeCap: CircularStrokeCap.round,
+                                      progressColor: Colors.blueAccent.withOpacity(0.8),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10, top: 18, bottom: 8),
+                          child: Container(
+                            height: 2,
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(212, 212, 212, 1.0),
+                              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, top: 18, bottom: 16),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Completed',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            letterSpacing: -0.2,
+                                            color: Colors.grey.withOpacity(0.7),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 4),
+                                          child: LinearPercentIndicator(
+                                            animation: true,
+                                            percent: widget.getTasks(Status.COMPLETED).length / widget.event.tasks.length,
+                                            lineHeight: 5,
+                                            width: 90,
+                                            linearStrokeCap: LinearStrokeCap.roundAll,
+                                            backgroundColor: Colors.grey[100],
+                                            progressColor: Color.fromRGBO(67, 147, 31, 1.0),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 6),
+                                          child: Text(
+                                            widget.getTasks(Status.COMPLETED).length.toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                              color: Colors.grey.withOpacity(0.7),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Active',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            letterSpacing: -0.2,
+                                            color: Colors.grey.withOpacity(0.7),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 4),
+                                          child: LinearPercentIndicator(
+                                            animation: true,
+                                            percent: widget.getTasks(Status.ACTIVE).length / widget.event.tasks.length,
+                                            lineHeight: 5,
+                                            width: 90,
+                                            linearStrokeCap: LinearStrokeCap.roundAll,
+                                            backgroundColor: Colors.grey[100],
+                                            progressColor: Color.fromRGBO(246, 197, 15, 1.0),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 6),
+                                          child: Text(
+                                            widget.getTasks(Status.ACTIVE).length.toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                              color: Colors.grey.withOpacity(0.7),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Pending',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            letterSpacing: -0.2,
+                                            color: Colors.grey.withOpacity(0.7),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 4),
+                                          child: LinearPercentIndicator(
+                                            animation: true,
+                                            percent: widget.getTasks(Status.PENDING).length / widget.event.tasks.length,
+                                            lineHeight: 5,
+                                            width: 90,
+                                            linearStrokeCap: LinearStrokeCap.roundAll,
+                                            backgroundColor: Colors.grey[100],
+                                            progressColor: Color.fromRGBO(219, 20, 36, 1.0),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 6),
+                                          child: Text(
+                                            widget.getTasks(Status.PENDING).length.toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                              color: Colors.grey.withOpacity(0.7),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               )
                             ],
                           ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 40,
-                          child:Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
-                            child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CircularPercentIndicator(
-                                  radius: 120.0,
-                                  lineWidth: 10.0,
-                                  animation: true,
-                                  percent: percentage,
-                                  center: Text(
-                                    "50%",
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black),
-                                  ),
-                                  backgroundColor: Colors.grey[100],
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  progressColor: Colors.blueAccent.withOpacity(0.8),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                        )
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10, top: 18, bottom: 8),
-                      child: Container(
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(212, 212, 212, 1.0),
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 18, bottom: 16),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'Completed',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        letterSpacing: -0.2,
-                                        color: Colors.grey.withOpacity(0.7),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: LinearPercentIndicator(
-                                        animation: true,
-                                        percent: widget.getTasks(Status.COMPLETED).length / widget.event.tasks.length,
-                                        lineHeight: 5,
-                                        width: 90,
-                                        linearStrokeCap: LinearStrokeCap.roundAll,
-                                        backgroundColor: Colors.grey[100],
-                                        progressColor: Color.fromRGBO(67, 147, 31, 1.0),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 6),
-                                      child: Text(
-                                        widget.getTasks(Status.COMPLETED).length.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          color: Colors.grey.withOpacity(0.7),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'Active',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        letterSpacing: -0.2,
-                                        color: Colors.grey.withOpacity(0.7),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: LinearPercentIndicator(
-                                        animation: true,
-                                        percent: widget.getTasks(Status.ACTIVE).length / widget.event.tasks.length,
-                                        lineHeight: 5,
-                                        width: 90,
-                                        linearStrokeCap: LinearStrokeCap.roundAll,
-                                        backgroundColor: Colors.grey[100],
-                                        progressColor: Color.fromRGBO(246, 197, 15, 1.0),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 6),
-                                      child: Text(
-                                        widget.getTasks(Status.ACTIVE).length.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          color: Colors.grey.withOpacity(0.7),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'Pending',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        letterSpacing: -0.2,
-                                        color: Colors.grey.withOpacity(0.7),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: LinearPercentIndicator(
-                                        animation: true,
-                                        percent: widget.getTasks(Status.PENDING).length / widget.event.tasks.length,
-                                        lineHeight: 5,
-                                        width: 90,
-                                        linearStrokeCap: LinearStrokeCap.roundAll,
-                                        backgroundColor: Colors.grey[100],
-                                        progressColor: Color.fromRGBO(
-                                            219, 20, 36, 1.0),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 6),
-                                      child: Text(
-                                        widget.getTasks(Status.PENDING).length.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          color: Colors.grey.withOpacity(0.7),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                ],
-              )
-            ),
-        ),
-        Container(
-                padding: EdgeInsets.symmetric(horizontal:1.0, vertical: 1.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(0),
+                  ),
                 ),
-                width: width,
-                height: 210,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child:Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                            flex: 60,
-                            child: CupertinoTabBar.CupertinoTabBar(
-                              const Color.fromRGBO(255, 255, 255, 1.0),
-                              const Color(0xFFf7f7f7),
-                              [
-                                const Text(
-                                  "Completed",
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17.00,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "SFProRounded",
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const Text(
-                                  "Active",
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17.00,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "SFProRounded",
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const Text(
-                                  "Pending",
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17.00,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "SFProRounded",
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                              cupertinoTabBarIIIValueGetter,
-                                  (int index) {
-                                setState(() {
-                                  cupertinoTabBarIIIValue = index;
-                                });
-                              },
-                              useShadow: true,
-                              innerHorizontalPadding: 0,
-                            ),
-                        ),
-                        Expanded(
-                            flex: 10,
-                            child:GestureDetector(
-                              onTap: () => _onAddTask(context),
-                              child: Icon(Icons.note_add, size: 22),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                          "Task list",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight:
+                              FontWeight.w700,
+                              fontSize: 20,
+                              color: Colors.black
                           ),
                         ),
-                        Expanded(
-                          flex: 10,
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SearchTaskPage(color: Color.fromRGBO(246, 197, 15, 0.8))),
-                                );
-                              },
-                              child: Icon(Icons.arrow_forward_ios, size: 22)
-                          ),
-                        ),
-                      ],
-                    ),
-                    ),
-                        Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                         _showTab(),
-                        ],
-                      ),
-                  ],
+                    ]
                 ),
               ),
-          ],
-        ),
-      ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  width: width,
+                  child: DefaultTabController(
+                    length: 5,
+                    child: Scaffold(
+                      appBar: PreferredSize(
+                        preferredSize: Size.fromHeight(55.0),
+                        child: AppBar(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        elevation: 0,
+                        bottom: TabBar(
+                          labelColor: Colors.black,
+                          indicatorColor: Colors.blueAccent,
+                          tabs: [
+                            Tab(icon: Icon(Icons.check, size: 40, color: Color.fromRGBO(67, 147, 31, 1.0))),
+                            Tab(icon: Icon(Icons.replay, size: 35, color: Color.fromRGBO(246, 197, 15, 1.0))),
+                            Tab(icon: Icon(Icons.alarm, size: 35, color: Color.fromRGBO(219, 20, 36, 1.0))),
+                            GestureDetector(
+                              onTap: () => _onAddTask(context),
+                              child: Icon(Icons.note_add, size: 30, color: Colors.black),
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SearchTaskPage(tasks: widget.event.tasks,)),
+                                  );
+                                },
+                                child: Icon(Icons.arrow_forward_ios, size: 30, color: Colors.black)
+                            )
+                          ],
+                        ),
+                      ),
+                      ),
+                      body: TabBarView(
+                        children: [
+                          showTaskList(Color.fromRGBO(67, 147, 31, 1.0), widget.getTasks(Status.COMPLETED)),
+                          showTaskList(Color.fromRGBO(246, 197, 15, 1.0), widget.getTasks(Status.ACTIVE)),
+                          showTaskList(Color.fromRGBO(219, 20, 36, 1.0), widget.getTasks(Status.PENDING)),
+                          Icon(Icons.directions_bike),
+                          Icon(Icons.directions_bike)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              ],
+            ),
+    ),
     );
   }
-  
-  Color _getColorFromStatus(Status status) {
-    if (status == Status.COMPLETED) return Color.fromRGBO(67, 147, 31, 1.0);
-    else if (status == Status.ACTIVE) return Color.fromRGBO(246, 197, 15, 1.0);
-    else return Color.fromRGBO(219, 20, 36, 1.0);
-  }
-  
 
-  _showTab() {
-    if (cupertinoTabBarIIIValueGetter() == 0) return showTaskList(Color.fromRGBO(67, 147, 31, 1.0), widget.getTasks(Status.COMPLETED));
-    else if (cupertinoTabBarIIIValueGetter() == 1) return showTaskList(Color.fromRGBO(246, 197, 15, 1.0), widget.getTasks(Status.ACTIVE));
-    else return showTaskList(Color.fromRGBO(219, 20, 36, 1.0), widget.getTasks(Status.PENDING));
-  }
 
   _buildTasks(Color color, List<Task> tasks) {
     List<Widget> list = [];
@@ -604,56 +565,20 @@ class _EventHomePageState extends State<EventHomePage> {
   }
 
   showTaskList(Color color, List<Task> tasks) {
-    return Expanded(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: Colors.transparent,
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5.0),
-                      height: 130.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: _buildTasks(color, tasks),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+    return Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 65),
+            color: Colors.white,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: _buildTasks(color, tasks),
+            ),
+          );
   }
 
   _taskDetails(context, Task task) {
-    // Reusable alert style
-    var alertStyle = AlertStyle(
-      animationType: AnimationType.fromTop,
-      isCloseButton: false,
-      isOverlayTapDismiss: true,
-      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
-      animationDuration: Duration(milliseconds: 200),
-      alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(
-          color: Colors.white,
-        ),
-      ),
-      titleStyle: TextStyle(
-        color: _getColorFromStatus(task.status),
-        fontSize: 25,
-        fontWeight: FontWeight.w800
-      ),
-    );
-
+    var alertStyle = TaskUtils.getAlertStyle(task.status);
     TaskDetails taskDetails = TaskDetails(task: task);
 
-    // Alert dialog using custom alert style
     Alert(
       context: context,
       style: alertStyle,
@@ -671,10 +596,10 @@ class _EventHomePageState extends State<EventHomePage> {
           ),
           DialogButton(
             onPressed: () async => {
-              task.status = convertStatus(taskDetails.controllerStatus.text),
+              task.status = TaskUtils.convertStatus(taskDetails.controllerStatus.text),
               task.user = taskDetails.controllerPeople.text != null ?
                           await StorageUtils.getUser(taskDetails.controllerPeople.text) : null,
-              updateTask(task),
+              TaskUtils.updateTaskInEvent(task, widget.event),
               await StorageUtils.updateEvent(widget.event),
               Navigator.pop(context),
               setState(() {}),
@@ -708,22 +633,6 @@ class _EventHomePageState extends State<EventHomePage> {
         ]).show();
   }
 
-  updateTask(Task task) {
-    List<Task> newList = [];
-    widget.event.tasks.forEach((element) {
-      if (element.UUID == task.UUID) newList.add(task);
-      else newList.add(element);
-    });
-    widget.event.tasks = newList;
-  }
-
-
-  Status convertStatus(String statusString) {
-    if (statusString == null || statusString == "") return null;
-    if (statusString == "COMPLETED") return Status.COMPLETED;
-    else if (statusString == "ACTIVE") return Status.ACTIVE;
-    else return Status.PENDING;
-  }
 
 
   _onAddPeople(context) {

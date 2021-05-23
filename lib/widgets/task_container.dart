@@ -13,6 +13,10 @@ class TaskContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color textColor = Colors.white;
     return Container(
+      constraints: BoxConstraints(
+        minHeight: 5.0,
+        maxHeight: 30.0,
+      ),
       width: 170,
       child: Card(
         shape: RoundedRectangleBorder(
@@ -21,7 +25,6 @@ class TaskContainer extends StatelessWidget {
         color: Colors.white,
         elevation: 2,
         child: Column(
-            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(

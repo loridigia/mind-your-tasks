@@ -1,15 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_your_tasks/screens/task/add_task.dart';
+import 'package:mind_your_tasks/models/Event.dart';
+import 'package:mind_your_tasks/models/Task.dart';
+import 'package:mind_your_tasks/screens/task/task_details.dart';
+import 'package:mind_your_tasks/screens/task/tasks_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:mind_your_tasks/widgets/main_drawer.dart';
 import 'package:mind_your_tasks/widgets/task_container.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class SearchTaskPage extends StatefulWidget {
-  SearchTaskPage({Key key, this.color}) : super(key: key);
+import '../../storage_utils.dart';
 
-  final Color color;
+class SearchTaskPage extends StatefulWidget {
+  SearchTaskPage({Key key, this.tasks}) : super(key: key);
+
+  final List<Task> tasks;
 
   @override
   _SearchTaskPageState createState() => _SearchTaskPageState();
@@ -18,7 +23,7 @@ class SearchTaskPage extends StatefulWidget {
 class _SearchTaskPageState extends State<SearchTaskPage> {
   @override
   Widget build(BuildContext context) {
-    int tasksNum = 8;
+    int tasksNum = widget.tasks.length;
     return Scaffold(
       backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       appBar: PreferredSize(
@@ -54,7 +59,6 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                           Expanded(
                             flex: 50,
                             child: TextFormField(
-                              maxLines: 1,
                               style: TextStyle(fontSize: 13, color: Colors.white),
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(
@@ -68,7 +72,6 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                           Expanded(
                             flex: 50,
                             child: TextFormField(
-                              maxLines: 1,
                               style: TextStyle(fontSize: 13, color: Colors.white),
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(
@@ -126,15 +129,16 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                       mainAxisSpacing: 4.0
                   ),
                   itemBuilder: (BuildContext context, int index){
-                    return GestureDetector(
-                      onTap: () => _onAlertButtonsPressed(context),
-                      child: TaskContainer(
-                          color: Color.fromRGBO(67, 147, 31, 1.0),
-                          taskName: "Buy Coke",
-                          personName: "Mario Rossi",
-                          date: "13/02/2021 10:30",
-                          desc: "Description of something about something else to be cut, but here is much bigger you know what i mean..."),
-                    );
+                    Task task = widget.tasks[index];
+                    return  GestureDetector(
+                        onTap: () => _taskDetails(context, task),
+                        child: TaskContainer(
+                            color: TaskUtils.getColorFromStatus(widget.tasks[index].status),
+                            taskName: task.name,
+                            personName: task.user != null ? task.user.username : "Not assigned",
+                            date: task.date.year.toString()+"-"+task.date.month.toString()+"-"+task.date.day.toString()+" "+task.date.hour.toString()+":"+task.date.minute.toString(),
+                            desc: task.description),
+                      );
                   },
                 ),
               ),
@@ -144,324 +148,65 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
     );
   }
 
-  Container taskCard(Color color) {
-    return Container(
-      width: 170,
-      height: 130,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        color: color,
-        elevation: 2,
-        child:Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.sticky_note_2, size: 16, color: Colors.white)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Buy Coke",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.assignment_ind, size: 16, color: Colors.white)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Mario Rossi",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.access_time, size: 16, color: Colors.white)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "13-03-2021 15:30",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-                child: Container(
-                  height: 1,
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(212, 212, 212, 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Description of the task, of course chars must be cut ...",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  _taskDetails(context, Task task) async {
+    var alertStyle = TaskUtils.getAlertStyle(task.status);
+    TaskDetails taskDetails = TaskDetails(task: task);
+    Event event = await StorageUtils.getEventByTask(task);
 
-  _onAlertButtonsPressed(context) {
-    // Reusable alert style
-    var alertStyle = AlertStyle(
-      animationType: AnimationType.fromTop,
-      isCloseButton: false,
-      isOverlayTapDismiss: true,
-      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
-      animationDuration: Duration(milliseconds: 200),
-      alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(
-          color: Colors.white,
-        ),
-      ),
-      titleStyle: TextStyle(
-          color: Color.fromRGBO(67, 147, 31, 0.8),
-          fontSize: 25,
-          fontWeight: FontWeight.w800
-      ),
-    );
-
-    // Alert dialog using custom alert style
     Alert(
         context: context,
         style: alertStyle,
         type: AlertType.none,
-        title: "Completed Task",
-        content: Padding(
-          padding: const EdgeInsets.all(2),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.sticky_note_2, size: 25)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Buy Coke",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.assignment_ind, size: 25)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Mario Rossi",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.access_time, size: 25)
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "13-03-2021 15:30",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w500)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                child: Container(
-                  height: 2,
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(212, 212, 212, 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                            "Description of the task, of course chars must be cut because all of them are too much, but hey here they fits!!",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w300)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        title: task.status.toString().substring(7) +" TASK",
+        content: taskDetails,
         buttons: [
           DialogButton(
             onPressed: () => Navigator.pop(context),
+            color: Colors.grey,
             child: Text(
-              "ASSIGN TO ME",
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          DialogButton(
+            onPressed: () async => {
+              task.status = TaskUtils.convertStatus(taskDetails.controllerStatus.text),
+              task.user = taskDetails.controllerPeople.text != null ?
+              await StorageUtils.getUser(taskDetails.controllerPeople.text) : null,
+              TaskUtils.updateTaskInEvent(task, event),
+              await StorageUtils.updateEvent(event),
+              Navigator.pop(context),
+              setState(() {}),
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                  SnackBar(
+                    content:
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              "Task correctly modified",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800
+                              )
+                          )
+                        ]
+                    ),
+                    backgroundColor: Colors.green,
+                  )
+              ),
+            },
+            child: Text(
+              "Apply",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           )
         ]).show();
   }
 
-  Text subheading(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-          color: LightColors.kDarkBlue,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.2),
-    );
-  }
-
-  static CircleAvatar addIcon() {
-    return CircleAvatar(
-      radius: 25.0,
-      backgroundColor: LightColors.kGreen,
-      child: Icon(
-        Icons.add,
-        size: 30.0,
-        color: Colors.white,
-      ),
-    );
-  }
 
 }
 

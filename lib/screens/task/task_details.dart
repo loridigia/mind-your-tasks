@@ -93,7 +93,7 @@ class _TaskDetailsState extends State<TaskDetails> {
       style: TextStyle(
           color: Colors.black,
           fontSize: 20.0,
-          fontWeight: FontWeight.w500),
+          fontWeight: FontWeight.w400),
       onChanged: (val) => print(val),
       onSaved: (val) => print(val),
     );
@@ -114,7 +114,7 @@ class _TaskDetailsState extends State<TaskDetails> {
       style: TextStyle(
         color: Colors.black,
         fontSize: 20.0,
-        fontWeight: FontWeight.w500),
+        fontWeight: FontWeight.w400),
       onChanged: (val) => print(val),
       onSaved: (val) => print(val),
     );
@@ -123,7 +123,7 @@ class _TaskDetailsState extends State<TaskDetails> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-          padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.only(left: 2, right: 2, top: 15, bottom: 15),
           child: Column(
             children: <Widget>[
               Row(
@@ -134,7 +134,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.sticky_note_2, size: 25)
+                        Icon(Icons.sticky_note_2, size: 25, color: Colors.grey,)
                       ],
                     ),
                   ),
@@ -147,7 +147,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20.0,
-                                fontWeight: FontWeight.w500)
+                                fontWeight: FontWeight.w400)
                         ),
                       ],
                     ),
@@ -155,7 +155,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
@@ -172,7 +172,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.access_time, size: 25)
+                        Icon(Icons.access_time, size: 25, color: Colors.grey,)
                       ],
                     ),
                   ),
@@ -186,7 +186,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20.0,
-                                fontWeight: FontWeight.w500)
+                                fontWeight: FontWeight.w400)
                         ),
                       ],
                     ),
@@ -194,7 +194,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
@@ -211,7 +211,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.assignment_ind, size: 25)
+                        Icon(Icons.assignment_ind, size: 25, color: Colors.grey)
                       ],
                     ),
                   ),
@@ -243,7 +243,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.pending_actions_rounded, size: 25)
+                        Icon(Icons.pending_actions_rounded, size: 25, color: Colors.grey)
                       ],
                     ),
                   ),
@@ -258,7 +258,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 15),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 15),
                 child: Container(
                   height: 2,
                   decoration: BoxDecoration(
@@ -280,7 +280,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.0,
-                                fontWeight: FontWeight.w300)
+                                fontWeight: FontWeight.w400)
                         ),
                       ],
                     ),

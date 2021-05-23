@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/Event.dart';
+import 'models/Task.dart';
 import 'models/User.dart';
 
 abstract class StorageUtils {
@@ -17,6 +18,17 @@ abstract class StorageUtils {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setStringList("Events", updated);
   }
+
+  static Future<Event> getEventByTask(Task task) async {
+    List<Event> events = await getEvents();
+    events.forEach((event) {
+      event.tasks.forEach((element) {
+        if (element.UUID == task.UUID) return event;
+      });
+    });
+    return null;
+  }
+
 
   static Future<List<Event>> getEvents() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
