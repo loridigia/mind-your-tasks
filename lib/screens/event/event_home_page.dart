@@ -56,11 +56,7 @@ class _EventHomePageState extends State<EventHomePage> {
           backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomePage()),
-            ),
+            onPressed: () => Navigator.pop(context),
           ),
           elevation: 0,
           actions: <Widget>[
@@ -70,7 +66,7 @@ class _EventHomePageState extends State<EventHomePage> {
                   onTap: () {_onCloseEvent(context);},
                   child: Icon(
                     Icons.remove_circle_outline,
-                    color: Color.fromRGBO(78, 78, 78, 1.0),
+                    color: Color.fromRGBO(189, 17, 17, 1.0),
                   ),
                 )
             ),
@@ -470,12 +466,16 @@ class _EventHomePageState extends State<EventHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => _onAddTask(context),
-                          child: Icon(Icons.note_add, size: 30, color: Colors.black),
-                        ),
-                      ),
+                      Expanded(child:GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks)),
+                            );
+                          },
+                          child: Icon(Icons.search, size: 30, color: Colors.black)
+                      )),
                       Expanded(
                           child: Text(
                             "Task list",
@@ -488,16 +488,12 @@ class _EventHomePageState extends State<EventHomePage> {
                             ),
                           ),
                       ),
-                      Expanded(child:GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks)),
-                            );
-                          },
-                          child: Icon(Icons.arrow_forward_ios, size: 30, color: Colors.black)
-                      )),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _onAddTask(context),
+                          child: Icon(Icons.note_add, size: 30, color: Colors.black),
+                        ),
+                      ),
                     ]
                 ),
               ),
@@ -677,7 +673,7 @@ class _EventHomePageState extends State<EventHomePage> {
         context: context,
         style: alertStyle,
         type: AlertType.none,
-        title: "Close this event",
+        title: "Remove this event",
         content: closeEvent(),
         buttons: [
           DialogButton(
@@ -685,7 +681,7 @@ class _EventHomePageState extends State<EventHomePage> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               "CANCEL",
-              style: TextStyle(color: Colors.white, fontSize: 15),
+              style: TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
           DialogButton(
@@ -700,8 +696,8 @@ class _EventHomePageState extends State<EventHomePage> {
                   )
             },
             child: Text(
-              "CLOSE EVENT",
-              style: TextStyle(color: Colors.white, fontSize: 15),
+              "REMOVE EVENT",
+              style: TextStyle(color: Colors.white, fontSize: 14),
             ),
           )
         ]).show();
@@ -751,7 +747,28 @@ class _EventHomePageState extends State<EventHomePage> {
         content: inviteLink(),
         buttons: [
           DialogButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                  SnackBar(
+                    content:
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              "Link copied to clipboard",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800
+                              )
+                          )
+                        ]
+                    ),
+                    backgroundColor: Colors.green,
+                  )),
+              Navigator.pop(context)},
             child: Text(
               "COPY TO CLIPBOARD",
               style: TextStyle(color: Colors.white, fontSize: 15),

@@ -9,6 +9,7 @@ import 'package:mind_your_tasks/screens/calendar_page.dart';
 import 'package:mind_your_tasks/screens/event/add_event.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
 import 'package:mind_your_tasks/screens/task/search_task_page.dart';
+import 'package:mind_your_tasks/screens/welcomePage.dart';
 import 'package:mind_your_tasks/storage_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -84,11 +85,34 @@ class _HomePageState extends State<HomePage> {
         preferredSize: Size.fromHeight(30.0),
         child: AppBar(
           backgroundColor: LightColors.kDarkYellow,
+          leading: IconButton(
+            icon: Icon(Icons.calendar_today, color: Colors.black, size: 20),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CalendarPage()),
+            ),
+          ),
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0, top: 10),
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WelcomePage()),
+                  ),
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.black,
+                  ),
+                )
+            ),
+          ]
         ),
       ),
-      drawer: MainDrawer(),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -180,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                                   radius: 25.0,
                                   backgroundColor: LightColors.kGreen,
                                   child: Icon(
-                                    Icons.list,
+                                    Icons.search,
                                     size: 25.0,
                                     color: Colors.white,
                                   ),

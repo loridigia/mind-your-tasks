@@ -42,7 +42,7 @@ class _AddEventPageState extends State<AddEventPage> {
                     Icons.sticky_note_2,
                     color: Colors.grey,
                   ),
-                  hintText: 'Task Name',
+                  hintText: 'Event Name',
                 ),
               ),
               SizedBox(height: 20),
