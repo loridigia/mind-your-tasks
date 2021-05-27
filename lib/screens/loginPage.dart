@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
@@ -198,17 +199,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
   Widget _title() {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
           text: 'MIND YOUR TASKS',
-          style: TextStyle(
-            fontSize: 27,
-            fontWeight: FontWeight.w900,
+          style: GoogleFonts.portLligatSans(
+            textStyle: Theme.of(context).textTheme.display1,
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
             color: Color(0xffe46b10),
-          )
-      ),
+          )),
     );
   }
 

@@ -84,6 +84,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               SizedBox(height: 20),
               TextFormField(
                 maxLines: 5,
+                maxLength: 100,
                 style: TextStyle(fontSize: 17),
                 controller: widget.controllerDescription,
                 decoration: InputDecoration(

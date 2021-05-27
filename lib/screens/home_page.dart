@@ -104,9 +104,7 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                         builder: (context) => WelcomePage()),
                   ),
-                  child: Icon(
-                    Icons.logout,
-                    color: Colors.black,
+                  child: Text("LOGOUT", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
                   ),
                 )
             ),
@@ -197,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SearchTaskPage(tasks: userTasks)),
+                                        builder: (context) => SearchTaskPage(tasks: userTasks, title: "My Tasks")),
                                   );
                                 },
                                 child: CircleAvatar(

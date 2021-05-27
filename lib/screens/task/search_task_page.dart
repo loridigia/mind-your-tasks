@@ -12,9 +12,10 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../storage_utils.dart';
 
 class SearchTaskPage extends StatefulWidget {
-  SearchTaskPage({Key key, this.tasks}) : super(key: key);
+  SearchTaskPage({Key key, this.tasks, this.title}) : super(key: key);
 
   final List<Task> tasks;
+  final String title;
 
   @override
   _SearchTaskPageState createState() => _SearchTaskPageState();
@@ -23,14 +24,14 @@ class SearchTaskPage extends StatefulWidget {
 class _SearchTaskPageState extends State<SearchTaskPage> {
   @override
   Widget build(BuildContext context) {
-    List<Task> filteredTask = [];
+    List<Task> filteredTask = widget.tasks;
     return Scaffold(
       backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(30.0),
         child: AppBar(
           title: Text(
-              "Search Task",
+              "Search " + widget.title,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,

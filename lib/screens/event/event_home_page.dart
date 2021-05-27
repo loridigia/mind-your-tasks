@@ -17,7 +17,6 @@ import 'package:mind_your_tasks/widgets/main_drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../storage_utils.dart';
 import '../../widgets/task_container.dart';
@@ -471,7 +470,7 @@ class _EventHomePageState extends State<EventHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks)),
+                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks, title: widget.event.name + "'s tasks")),
                             );
                           },
                           child: Icon(Icons.search, size: 30, color: Colors.black)
