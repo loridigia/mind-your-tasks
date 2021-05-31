@@ -136,7 +136,7 @@ class TaskContainer extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           Text(
-                              desc,
+                              desc != "" ? desc : "NO DESCRIPTION",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 10.0,

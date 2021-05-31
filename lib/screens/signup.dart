@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_your_tasks/screens/home_page.dart';
 import '../widgets/bezierContainer.dart';
 import 'package:mind_your_tasks/screens/loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -136,6 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
         _entryField("Username"),
         _entryField("Email"),
         _entryField("Password", isPassword: true),
+        _entryField("Confirm Password", isPassword: true),
       ],
     );
   }
@@ -169,7 +171,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    _submitButton(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginPage()),
+                        );
+                      },
+                      child: _submitButton(),
+                    ),
                     SizedBox(height: height * .14),
                     _loginAccountLabel(),
                   ],

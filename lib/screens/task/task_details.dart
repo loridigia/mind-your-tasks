@@ -276,7 +276,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                            widget.task.description != null || widget.task.description != "" ? widget.task.description : "No description",
+                            widget.task.description != ""  ? widget.task.description : "No description",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.0,

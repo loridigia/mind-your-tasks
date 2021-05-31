@@ -71,6 +71,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   syncCalendar = value;
                   notificationsEnabled = value;
+                  notification = value;
                 });
               },
             ),
@@ -95,13 +96,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 });
               },
             ),
-          ],
-        ),
-        SettingsSection(
-          title: 'Misc',
-          tiles: [
-            SettingsTile(
-                title: 'Terms of Service', leading: Icon(Icons.description)),
           ],
         ),
         CustomSection(
