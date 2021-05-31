@@ -24,7 +24,7 @@ class _TaskDetailsState extends State<TaskDetails> {
 
   final List<Map<String, dynamic>> _users = [
     {
-      'value': null,
+      'value': "",
       'label': 'Not assigned',
       'textStyle': TextStyle(
           fontSize: 16,
@@ -79,7 +79,7 @@ class _TaskDetailsState extends State<TaskDetails> {
   }
 
   getSelectUser() {
-    widget.controllerPeople = new TextEditingController(text: widget.task.user != null ? widget.task.user.username : null);
+    widget.controllerPeople = new TextEditingController(text: widget.task.user != null ? widget.task.user.username : "");
     return SelectFormField(
       textAlign: TextAlign.center,
       controller: widget.controllerPeople,
@@ -276,7 +276,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                            widget.task.description != null ? widget.task.description : "No description",
+                            widget.task.description != null || widget.task.description != "" ? widget.task.description : "No description",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.0,

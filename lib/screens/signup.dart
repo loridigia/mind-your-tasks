@@ -134,7 +134,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       children: <Widget>[
         _entryField("Username"),
-        _entryField("Email id"),
+        _entryField("Email"),
         _entryField("Password", isPassword: true),
       ],
     );

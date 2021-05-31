@@ -44,7 +44,10 @@ class _EventHomePageState extends State<EventHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double percentage = 50/100;
+    double percentage = 0;
+    if (widget.event.tasks.length > 0 && widget.getTasks(Status.COMPLETED).length > 0) {
+      percentage = (widget.getTasks(Status.COMPLETED).length / widget.event.tasks.length);
+    }
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       //backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
@@ -277,7 +280,7 @@ class _EventHomePageState extends State<EventHomePage> {
                                       animation: true,
                                       percent: percentage,
                                       center: Text(
-                                        "50%",
+                                        (percentage * 100).toInt().toString() + " %",
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.w600,
@@ -546,6 +549,9 @@ class _EventHomePageState extends State<EventHomePage> {
     );
   }
 
+  /**
+   * END UI START LOGIC
+   */
 
   _buildTasks(Color color, List<Task> tasks) {
     List<Widget> list = [];
@@ -588,8 +594,106 @@ class _EventHomePageState extends State<EventHomePage> {
           );
   }
 
+  deleteTask(Task task) async {
+    List<Task> tasks = widget.event.tasks;
+    List<Task> new_tasks = [];
+    tasks.forEach((element) {
+      if (element.UUID != task.UUID) new_tasks.add(element);
+    });
+    widget.event.tasks = new_tasks;
+    bool updated = await StorageUtils.updateEvent(widget.event);
+  }
+
+
+  _taskDeleteContent() {
+    return Container(
+      child: Column(
+        children: [
+          Text(
+            "Are you sure you want delete this task?",
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _taskDelete(context, Task task) {
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromTop,
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+      animationDuration: Duration(milliseconds: 200),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: BorderSide(
+          color: Colors.white,
+        ),
+      ),
+      titleStyle: TextStyle(
+          color: Colors.red,
+          fontSize: 22,
+          fontWeight: FontWeight.w800
+      ),
+    );
+
+    Alert(
+        context: context,
+        style: alertStyle,
+        type: AlertType.none,
+        title: "DELETE TASK",
+        content: _taskDeleteContent(),
+        buttons: [
+          DialogButton(
+            onPressed: () async => {
+              Navigator.pop(context),
+              _taskDetails(context, task)
+            },
+            color: Colors.grey,
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          DialogButton(
+            onPressed: () => {
+              Navigator.pop(context),
+              deleteTask(task),
+              setState(() {}),
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                  SnackBar(
+                    content:
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              "Task deleted correctly",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800
+                              )
+                          )
+                        ]
+                    ),
+                    backgroundColor: Colors.green,
+                  )
+              ),
+            },
+            color: Colors.red,
+            child: Text(
+              "Delete",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ]).show();
+  }
+
   _taskDetails(context, Task task) {
-    var alertStyle = TaskUtils.getAlertStyle(task.status);
+    var alertStyle = TaskUtils.getAlertStyle(task.status, true, false);
     TaskDetails taskDetails = TaskDetails(task: task);
 
     Alert(
@@ -600,17 +704,20 @@ class _EventHomePageState extends State<EventHomePage> {
         content: taskDetails,
         buttons: [
           DialogButton(
-            onPressed: () => Navigator.pop(context),
-            color: Colors.grey,
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
+              onPressed: () => {
+                Navigator.pop(context),
+                _taskDelete(context, task),
+              },
+              color: Colors.red,
+              child: Text(
+                "Delete",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
           ),
           DialogButton(
             onPressed: () async => {
               task.status = TaskUtils.convertStatus(taskDetails.controllerStatus.text),
-              task.user = taskDetails.controllerPeople.text != null ?
+              task.user = taskDetails.controllerPeople.text != "" ?
                           await StorageUtils.getUser(taskDetails.controllerPeople.text) : null,
               TaskUtils.updateTaskInEvent(task, widget.event),
               await StorageUtils.updateEvent(widget.event),
@@ -639,10 +746,10 @@ class _EventHomePageState extends State<EventHomePage> {
               ),
             },
             child: Text(
-              "Apply",
+              "Save",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-          )
+          ),
         ]).show();
   }
 
@@ -875,10 +982,10 @@ class _EventHomePageState extends State<EventHomePage> {
     String username = taskPage.controllerPeople.text;
     String description = taskPage.controllerDescription.text;
 
-    debugPrint(taskPage.controllerDate.text);
+    debugPrint(username);
     DateTime date = taskPage.controllerDate.text != "" ? DateTime.parse(taskPage.controllerDate.text) : null;
 
-    User user = username != null ? await StorageUtils.getUser(username) : null;
+    User user = username != "" ? await StorageUtils.getUser(username) : null;
     Task task = Task(taskName, date, user, description);
     widget.event.tasks.add(task);
     bool updated = await StorageUtils.updateEvent(widget.event);

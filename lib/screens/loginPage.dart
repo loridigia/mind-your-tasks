@@ -32,25 +32,25 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     User user = User("TestUser", "test-email@gmail.com");
-    Task task = Task("Test1", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "");
+    Task task = Task("Make Mockup", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "");
     task.status = Status.COMPLETED;
-    Task task2 = Task("Test2", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
+    Task task2 = Task("Make PPT", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
     task2.status = Status.COMPLETED;
 
-    Task task3 = Task("Test3", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE");
+    Task task3 = Task("Prototype", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING ELSE");
     task3.status = Status.ACTIVE;
 
-    Task task4 = Task("Test4", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Buy Gift");
-    Task task5 = Task("Test5", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Buy Alcol");
-    Task task6 = Task("Test6", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Bring chairs");
+    Task task4 = Task("Buy Food", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Burgers, chips, mayo ...");
+    Task task5 = Task("Buy Alcol", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "Wine, Beer ...");
+    Task task6 = Task("Bring Chairs", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "");
 
     Event event = Event("Party night", DateTime.fromMillisecondsSinceEpoch(1625077149000), [user]);
     Event event2 = Event("HCI project", DateTime.fromMillisecondsSinceEpoch(1635077449000), [user]);
     Event event4 = Event("House", null, [user]);
 
-    event.addTask(task);
-    event.addTask(task2);
-    event.addTask(task3);
+    event2.addTask(task);
+    event2.addTask(task2);
+    event2.addTask(task3);
     event.addTask(task4);
     event.addTask(task5);
     event.addTask(task6);

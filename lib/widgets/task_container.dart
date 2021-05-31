@@ -126,6 +126,7 @@ class TaskContainer extends StatelessWidget {
               ),
           Container(
                   padding: const EdgeInsets.all(6),
+                  height: 80,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

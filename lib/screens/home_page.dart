@@ -8,6 +8,7 @@ import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/calendar_page.dart';
 import 'package:mind_your_tasks/screens/event/add_event.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
+import 'package:mind_your_tasks/screens/settings.dart';
 import 'package:mind_your_tasks/screens/task/search_task_page.dart';
 import 'package:mind_your_tasks/screens/welcomePage.dart';
 import 'package:mind_your_tasks/storage_utils.dart';
@@ -86,11 +87,11 @@ class _HomePageState extends State<HomePage> {
         child: AppBar(
           backgroundColor: LightColors.kDarkYellow,
           leading: IconButton(
-            icon: Icon(Icons.calendar_today, color: Colors.black, size: 20),
+            icon: Icon(Icons.settings, color: Colors.black, size: 20),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CalendarPage()),
+                  builder: (context) => SettingsScreen(user: this.user)),
             ),
           ),
           iconTheme: IconThemeData(color: Colors.black),
@@ -392,9 +393,24 @@ class _HomePageState extends State<HomePage> {
                 builder: (context) => EventHomePage(event: event)),
           );
         },
-        child: generateProjectCard(LightColors.kBlue, 0.5, event.name, event.date),
+        child: generateProjectCard(LightColors.kBlue, calculatePercentage(event), event.name, event.date),
       ),
     );
+  }
+
+  double calculatePercentage(Event event) {
+    if (event.tasks.isNotEmpty && getTasks(Status.COMPLETED, event).isNotEmpty) {
+      return getTasks(Status.COMPLETED, event).length / event.tasks.length;
+    }
+    else return 0;
+  }
+
+  List<Task> getTasks(Status status, Event event) {
+    List<Task> tasks = [];
+    event.tasks.forEach((task) {
+      if (task.status == status) tasks.add(task);
+    });
+    return tasks;
   }
 
   Text subheading(String title) {

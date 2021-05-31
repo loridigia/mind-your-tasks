@@ -9,11 +9,11 @@ import '../../storage_utils.dart';
 
 class TaskUtils {
 
-  static getAlertStyle(Status status) {
+  static getAlertStyle(Status status, bool closeButton, bool overlayDismiss) {
     return AlertStyle(
       animationType: AnimationType.fromTop,
-      isCloseButton: false,
-      isOverlayTapDismiss: true,
+      isCloseButton: closeButton,
+      isOverlayTapDismiss: overlayDismiss,
       descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
       animationDuration: Duration(milliseconds: 200),
       alertBorder: RoundedRectangleBorder(

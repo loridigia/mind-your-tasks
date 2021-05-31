@@ -160,7 +160,7 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
   }
 
   _taskDetails(context, Task task) async {
-    var alertStyle = TaskUtils.getAlertStyle(task.status);
+    var alertStyle = TaskUtils.getAlertStyle(task.status, true, false);
     TaskDetails taskDetails = TaskDetails(task: task);
     Event event = await StorageUtils.getEventByTask(task);
 

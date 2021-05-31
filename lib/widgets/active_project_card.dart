@@ -59,7 +59,7 @@ class ActiveProjectsCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                            date != null ? date.day.toString()+"-"+date.month.toString()+"-"+date.day.toString()+"  "+date.hour.toString()+":"+date.minute.toString() : "",
+                            date != null ? date.day.toString()+"-"+date.month.toString()+"-"+date.year.toString()+"  "+date.hour.toString()+":"+date.minute.toString() : "No date",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11.0,
@@ -83,7 +83,7 @@ class ActiveProjectsCard extends StatelessWidget {
                 backgroundColor: Colors.white10,
                 progressColor: Colors.white,
                 center: Text(
-                  '${(loadingPercent*100).round()}%',
+                  (loadingPercent * 100).toInt().toString() + " %",
                   style: TextStyle(
                       fontWeight: FontWeight.w700, color: Colors.white),
                 ),
