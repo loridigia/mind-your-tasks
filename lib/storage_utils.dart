@@ -9,6 +9,15 @@ import 'models/User.dart';
 
 abstract class StorageUtils {
 
+  static Future<Event> getEventByUUID(String uuid) async {
+    List<Event> events = await getEvents();
+    Event event;
+    events.forEach((element) {
+      if (element.UUID == uuid) event = element;
+    });
+    return event;
+  }
+
   static Future<bool> updateEvent(Event event) async {
     List<Event> events = await getEvents();
     List<String> updated = [];
@@ -33,12 +42,15 @@ abstract class StorageUtils {
 
   static Future<Event> getEventByTask(Task task) async {
     List<Event> events = await getEvents();
+    Event eventFound = null;
     events.forEach((event) {
       event.tasks.forEach((element) {
-        if (element.UUID == task.UUID) return event;
+        if (element.UUID == task.UUID) {
+          eventFound = event;
+        }
       });
     });
-    return null;
+    return eventFound;
   }
 
 

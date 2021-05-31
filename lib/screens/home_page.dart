@@ -182,8 +182,7 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Container(
                       color: Colors.transparent,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                       child: Column(
                         children: <Widget>[
                           Row(
@@ -196,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SearchTaskPage(tasks: userTasks, title: "My Tasks")),
+                                        builder: (context) => SearchTaskPage(tasks: userTasks, title: "My Tasks", username: user.username)),
                                   );
                                 },
                                 child: CircleAvatar(

@@ -28,7 +28,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(
+          title: Text('Settings'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: buildSettingsList(),
     );
   }
@@ -58,10 +64,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _onChangePassword(context);
             },
             ),
+            SettingsTile.switchTile(
+              title: 'Login with fingerprint',
+              leading: Icon(Icons.fingerprint),
+              switchValue: fingerPrint,
+              onToggle: (bool value) {
+                setState(() {
+                  fingerPrint = value;
+                });
+              },
+            ),
           ],
         ),
         SettingsSection(
-          title: 'Security',
+          title: 'Misc',
           tiles: [
             SettingsTile.switchTile(
               title: 'Sync events with calendar',
@@ -74,16 +90,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   notification = value;
                 });
               },
-            ),
-            SettingsTile.switchTile(
-                title: 'Login with fingerprint',
-                leading: Icon(Icons.fingerprint),
-                switchValue: fingerPrint,
-                onToggle: (bool value) {
-                  setState(() {
-                    fingerPrint = value;
-                  });
-                },
             ),
             SettingsTile.switchTile(
               title: 'Enable Notifications',

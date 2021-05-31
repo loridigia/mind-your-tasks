@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cupertino_tabbar/cupertino_tabbar.dart' as CupertinoTabBar;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
@@ -43,7 +42,24 @@ class EventHomePage extends StatefulWidget {
 class _EventHomePageState extends State<EventHomePage> {
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+  }
+
+  Future<String> getData(String eventUUID) async {
+    widget.event = await StorageUtils.getEventByUUID(eventUUID);
+    return "ready";
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder(
+    initialData: false,
+    future: getData(widget.event.UUID),
+    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.done && snapshot.hasData ? _buildWidget(context, snapshot.data) : const SizedBox(),
+  );
+
+  @override
+  Widget _buildWidget(BuildContext context, dynamic data) {
     double percentage = 0;
     if (widget.event.tasks.length > 0 && widget.getTasks(Status.COMPLETED).length > 0) {
       percentage = (widget.getTasks(Status.COMPLETED).length / widget.event.tasks.length);
@@ -58,7 +74,11 @@ class _EventHomePageState extends State<EventHomePage> {
           backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage()),
+            ),
           ),
           elevation: 0,
           actions: <Widget>[
@@ -473,7 +493,7 @@ class _EventHomePageState extends State<EventHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SearchTaskPage(tasks: widget.event.tasks, title: widget.event.name + "'s tasks")),
+                                  builder: (context) => SearchTaskPage(event: widget.event, tasks: widget.event.tasks, title: widget.event.name + "'s tasks")),
                             );
                           },
                           child: Icon(Icons.search, size: 30, color: Colors.black)
