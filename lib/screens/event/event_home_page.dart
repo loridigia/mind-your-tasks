@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cupertino_tabbar/cupertino_tabbar.dart' as CupertinoTabBar;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
@@ -12,7 +13,6 @@ import 'package:mind_your_tasks/screens/task/search_task_page.dart';
 import 'package:mind_your_tasks/screens/task/task_details.dart';
 import 'package:mind_your_tasks/screens/task/tasks_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
-import 'package:mind_your_tasks/widgets/main_drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -65,8 +65,11 @@ class _EventHomePageState extends State<EventHomePage> {
       percentage = (widget.getTasks(Status.COMPLETED).length / widget.event.tasks.length);
     }
     double width = MediaQuery.of(context).size.width;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Color.fromRGBO(242, 243, 248, 1.0),
+        systemNavigationBarColor: Colors.black45,
+    ));
     return Scaffold(
-      //backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(35.0),
@@ -105,7 +108,6 @@ class _EventHomePageState extends State<EventHomePage> {
           ],
         ),
       ),
-      drawer: MainDrawer(),
       body: SafeArea(
         child: Column(
           children: <Widget>[

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/screens/loginPage.dart';
 import 'package:mind_your_tasks/screens/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -108,6 +109,10 @@ class _WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Color(0xfffbb448),
+      systemNavigationBarColor: Colors.black45,
+    ));
     return Scaffold(
       body:SingleChildScrollView(
         child:Container(

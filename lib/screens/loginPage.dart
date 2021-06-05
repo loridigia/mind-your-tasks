@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
@@ -32,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     User user = User("TestUser", "test-email@gmail.com");
-    Task task = Task("Make Mockup", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "");
+    Task task = Task("Make Mockup", DateTime.fromMillisecondsSinceEpoch(1625077149), null, "");
     task.status = Status.COMPLETED;
     Task task2 = Task("Make PPT", DateTime.fromMillisecondsSinceEpoch(1625077149), user, "SOMETHING TO DO");
     task2.status = Status.COMPLETED;
@@ -225,6 +226,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      systemNavigationBarColor: Colors.black45,
+    ));
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Container(

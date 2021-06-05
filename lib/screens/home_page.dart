@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
-import 'package:mind_your_tasks/screens/calendar_page.dart';
 import 'package:mind_your_tasks/screens/event/add_event.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
 import 'package:mind_your_tasks/screens/settings.dart';
@@ -14,7 +14,6 @@ import 'package:mind_your_tasks/screens/welcomePage.dart';
 import 'package:mind_your_tasks/storage_utils.dart';
 import 'package:mind_your_tasks/theme/colors/light_colors.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import '../widgets/main_drawer.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:mind_your_tasks/widgets/task_column.dart';
 import 'package:mind_your_tasks/widgets/active_project_card.dart';
@@ -48,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     events.forEach((event) {
       List<Task> allTasks = event.tasks;
       allTasks.forEach((task) {
-        if (task.user.username == user.username) {
+        if (task.user != null && task.user.username == user.username) {
           userTasks.add(task);
           if (task.status == Status.COMPLETED) completedTasks++;
           else if (task.status == Status.ACTIVE) activeTasks++;
@@ -80,6 +79,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildWidget(BuildContext context, dynamic data) {
     double width = MediaQuery.of(context).size.width;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: LightColors.kDarkYellow,
+        systemNavigationBarColor: Colors.black45,
+    ));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(

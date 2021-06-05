@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/screens/home_page.dart';
 import '../widgets/bezierContainer.dart';
 import 'package:mind_your_tasks/screens/loginPage.dart';
@@ -144,6 +145,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      systemNavigationBarColor: Colors.black45,
+    ));
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(

@@ -60,6 +60,7 @@ abstract class StorageUtils {
     List<Event> events = [];
     Set<String> set = list.toSet();
     set.forEach((element) {
+      debugPrint(element);
       events.add(Event.fromJson(jsonDecode(element)));
     });
     return events;

@@ -2,13 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mind_your_tasks/models/Event.dart';
 import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
 import 'package:mind_your_tasks/screens/task/task_details.dart';
 import 'package:mind_your_tasks/screens/task/tasks_utils.dart';
-import 'package:mind_your_tasks/theme/colors/light_colors.dart';
-import 'package:mind_your_tasks/widgets/main_drawer.dart';
 import 'package:mind_your_tasks/widgets/task_container.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -26,16 +25,44 @@ class SearchTaskPage extends StatefulWidget {
   final formKey = GlobalKey<FormState>();
 
   TextEditingController controllerPeople = new TextEditingController();
+  TextEditingController controllerTaskName = new TextEditingController();
+  TextEditingController controllerDate = new TextEditingController();
+  TextEditingController controllerStatus = new TextEditingController();
+
 
   @override
   _SearchTaskPageState createState() => _SearchTaskPageState();
 }
 
 class _SearchTaskPageState extends State<SearchTaskPage> {
+
+  List<Task> filterTasks() {
+    String name = widget.controllerTaskName.text;
+    String people = widget.controllerPeople.text;
+    String date = widget.controllerDate.text;
+    String status = widget.controllerStatus.text;
+    if (name != null && name != "" ||
+        people != null && people != "" ||
+        date != null && date != "" ||
+        status != null && status != "") {
+      return widget.tasks.where((u) =>
+            (u.name.toUpperCase().contains(name.toUpperCase())) &&
+            (u.user.username.toUpperCase().contains(people.toUpperCase())) &&
+            (u.date.toString().toUpperCase().contains(date.toUpperCase())) &&
+            (u.status.toString().toUpperCase().contains(status.toUpperCase())))
+            .toList();
+    }
+    return widget.tasks;
+  }
+
   @override
   Widget build(BuildContext context) {
     widget.controllerPeople = new TextEditingController(text: widget.username != null ? widget.username : "");
-    List<Task> filteredTask = widget.tasks;
+    List<Task> filteredTask = filterTasks();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.blue,
+        systemNavigationBarColor: Colors.black45,
+    ));
     return Scaffold(
       backgroundColor: Color.fromRGBO(242, 243, 248, 1.0),
       appBar: PreferredSize(
@@ -48,7 +75,7 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500)
           ),
-          backgroundColor: LightColors.kBlue,
+          backgroundColor: Colors.blue,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => {
@@ -71,14 +98,13 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
           elevation: 0,
         ),
       ),
-      drawer: MainDrawer(),
       body: SafeArea(
           child: Column(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Container(
-                  color: LightColors.kBlue,
+                  color: Colors.blue,
                   child: Form(
                     key: widget.formKey,
                     child: Column(
@@ -88,8 +114,15 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                           Expanded(
                             flex: 50,
                             child: TextFormField(
+                              controller: widget.controllerTaskName,
                               style: TextStyle(fontSize: 15, color: Colors.white),
+                              cursorColor: Colors.white,
                               decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
                                 prefixIcon: const Icon(
                                   Icons.sticky_note_2,
                                   color: Colors.white,
@@ -97,13 +130,7 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                                 hintText: 'Task Name',
                               ),
                               onChanged: (string) {
-                                setState(() {
-                                  filteredTask = widget.tasks
-                                      .where((u) => (u.name
-                                      .toLowerCase()
-                                      .contains(string.toLowerCase())))
-                                      .toList();
-                                });
+                                setState(() {});
                                 debugPrint(filteredTask.length.toString());
                               },
                             ),
@@ -114,13 +141,23 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                               readOnly: widget.username != null,
                               controller: widget.controllerPeople,
                               style: TextStyle(fontSize: 15, color: Colors.white),
+                              cursorColor: Colors.white,
                               decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
                                 prefixIcon: const Icon(
                                   Icons.people_alt,
                                   color: Colors.white,
                                 ),
                                 hintText: 'People',
                               ),
+                              onChanged: (string) {
+                                setState(() {});
+                                debugPrint(filteredTask.length.toString());
+                              },
                             ),
                           ),
                         ],
@@ -130,29 +167,51 @@ class _SearchTaskPageState extends State<SearchTaskPage> {
                           Expanded(
                             flex: 50,
                             child: TextFormField(
+                              controller: widget.controllerDate,
                               maxLines: 1,
                               style: TextStyle(fontSize: 15, color: Colors.white),
+                              cursorColor: Colors.white,
                               decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
                                 prefixIcon: const Icon(
                                   Icons.access_time,
                                   color: Colors.white,
                                 ),
                                 hintText: 'Date',
                               ),
+                              onChanged: (string) {
+                                setState(() {});
+                                debugPrint(filteredTask.length.toString());
+                              },
                             ),
                           ),
                           Expanded(
                             flex: 50,
                             child: TextFormField(
+                              controller: widget.controllerStatus,
                               maxLines: 1,
                               style: TextStyle(fontSize: 15, color: Colors.white),
+                              cursorColor: Colors.white,
                               decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white
+                                    )
+                                ),
                                 prefixIcon: const Icon(
                                   Icons.pending_actions_rounded,
                                   color: Colors.white,
                                 ),
                                 hintText: 'Status',
                               ),
+                              onChanged: (string) {
+                                setState(() {});
+                                debugPrint(filteredTask.length.toString());
+                              },
                             ),
                           ),
                         ],
