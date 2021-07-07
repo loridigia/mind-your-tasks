@@ -86,7 +86,7 @@ class _EventHomePageState extends State<EventHomePage> {
           elevation: 0,
           actions: <Widget>[
             Padding(
-                padding: EdgeInsets.only(right: 130.0, top: 10),
+                padding: EdgeInsets.only(right: 75.0, top: 10),
                 child: GestureDetector(
                   onTap: () {_onCloseEvent(context);},
                   child: Icon(
@@ -96,13 +96,17 @@ class _EventHomePageState extends State<EventHomePage> {
                 )
             ),
             Padding(
-                padding: EdgeInsets.only(right: 20.0, top: 10),
+                padding: EdgeInsets.only(right: 2.0, top: 18),
                 child: GestureDetector(
                   onTap: () {_onAddPeople(context);},
-                  child: Icon(
-                    Icons.person_add,
-                    color: Colors.black,
-                  ),
+                  child: Text("ADD PEOPLE", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 10))
+                )
+            ),
+            Padding(
+                padding: EdgeInsets.only(right: 10.0, top: 10),
+                child: GestureDetector(
+                    onTap: () {_onAddPeople(context);},
+                    child: Icon(Icons.person_add, color: Colors.black)
                 )
             ),
           ],
@@ -592,7 +596,7 @@ class _EventHomePageState extends State<EventHomePage> {
     });
     if (list.isEmpty) list.add(
       Padding(
-        padding: const EdgeInsets.only(left: 75, top: 40),
+        padding: const EdgeInsets.only(left: 85, top: 50),
         child: Text(
             "THERE ARE NO TASKS",
             style: TextStyle(

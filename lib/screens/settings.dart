@@ -24,6 +24,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool notificationsEnabled = true;
   bool notification = true;
   bool fingerPrint = true;
+  bool _passwordVisibleNewPass = true;
+  bool _passwordVisibleConfirmPass = true;
+  bool _passwordVisibleOldPass = true;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +211,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget oldPassword() {
     return TextFormField(
-        obscureText: true,
         controller: widget.controllerOldPassword,
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -214,15 +218,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
           }
           return null;
         },
+        obscureText: _passwordVisibleOldPass,
         decoration: InputDecoration(
             border: InputBorder.none,
             fillColor: Color(0xfff3f3f4),
-            filled: true));
+            filled: true,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _passwordVisibleOldPass
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: Theme.of(context).primaryColorDark,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisibleOldPass = !_passwordVisibleOldPass;
+                debugPrint("tap");
+              });
+            },
+          ),));
   }
 
   Widget newPassword() {
     return TextFormField(
-        obscureText: true,
         controller: widget.controllerNewPassword,
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -230,10 +248,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
           }
           return null;
         },
+        obscureText: _passwordVisibleNewPass,
         decoration: InputDecoration(
             border: InputBorder.none,
             fillColor: Color(0xfff3f3f4),
-            filled: true));
+            filled: true,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _passwordVisibleNewPass
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: Theme.of(context).primaryColorDark,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisibleNewPass = !_passwordVisibleNewPass;
+                debugPrint("tap");
+              });
+            },
+          ),
+        ));
   }
 
   Widget confirmPassword() {
@@ -249,7 +283,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         decoration: InputDecoration(
             border: InputBorder.none,
             fillColor: Color(0xfff3f3f4),
-            filled: true));
+            filled: true,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _passwordVisibleConfirmPass
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: Theme.of(context).primaryColorDark,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisibleConfirmPass = !_passwordVisibleConfirmPass;
+                debugPrint("tap");
+              });
+            },
+          ),));
   }
 
   Widget _entryField(String title, Widget textFormField) {

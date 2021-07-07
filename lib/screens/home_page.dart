@@ -8,6 +8,7 @@ import 'package:mind_your_tasks/models/Task.dart';
 import 'package:mind_your_tasks/models/User.dart';
 import 'package:mind_your_tasks/screens/event/add_event.dart';
 import 'package:mind_your_tasks/screens/event/event_home_page.dart';
+import 'package:mind_your_tasks/screens/loginPage.dart';
 import 'package:mind_your_tasks/screens/settings.dart';
 import 'package:mind_your_tasks/screens/task/search_task_page.dart';
 import 'package:mind_your_tasks/screens/welcomePage.dart';
@@ -103,11 +104,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
                 padding: EdgeInsets.only(right: 20.0, top: 10),
                 child: GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => WelcomePage()),
-                  ),
+                  onTap: () => _onLogout(context),
                   child: Text("LOGOUT", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
                   ),
                 )
@@ -203,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 child: CircleAvatar(
                                   radius: 25.0,
-                                  backgroundColor: LightColors.kGreen,
+                                  backgroundColor: LightColors.kBlue,
                                   child: Icon(
                                     Icons.search,
                                     size: 25.0,
@@ -247,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          subheading('Active Event'),
+                          subheading('Active Events'),
                           GestureDetector(
                             onTap: () {
                               _onAddEvent(context);
@@ -429,7 +426,7 @@ class _HomePageState extends State<HomePage> {
   static CircleAvatar addIcon() {
     return CircleAvatar(
       radius: 25.0,
-      backgroundColor: LightColors.kGreen,
+      backgroundColor: LightColors.kBlue,
       child: Icon(
         Icons.add,
         size: 30.0,
@@ -445,4 +442,72 @@ class _HomePageState extends State<HomePage> {
         title: title,
         date: date);
   }
+
+  _onLogout(context) {
+    // Reusable alert style
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromTop,
+      isCloseButton: false,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+      animationDuration: Duration(milliseconds: 200),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: BorderSide(
+          color: Colors.white,
+        ),
+      ),
+      titleStyle: TextStyle(
+          color: Colors.red,
+          fontSize: 22,
+          fontWeight: FontWeight.w800
+      ),
+    );
+
+    // Alert dialog using custom alert style
+    Alert(
+        context: context,
+        style: alertStyle,
+        type: AlertType.none,
+        title: "LOGOUT",
+        content: logout(),
+        buttons: [
+          DialogButton(
+            color: Colors.grey,
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "CANCEL",
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          ),
+          DialogButton(
+            color: Colors.red,
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => LoginPage()),
+              )
+            },
+            child: Text(
+              "LOGOUT",
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          )
+        ]).show();
+  }
+
+  logout() {
+    return Container(
+      child: Column(
+        children: [
+          Text(
+            "Are you sure you want exit from the application?",
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
 }

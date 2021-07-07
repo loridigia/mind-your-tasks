@@ -15,6 +15,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool _passwordVisibleConfirmPass = true;
+  bool _passwordVisibleNewPass = true;
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -55,6 +58,82 @@ class _SignUpPageState extends State<SignUpPage> {
                   border: InputBorder.none,
                   fillColor: Color(0xfff3f3f4),
                   filled: true))
+        ],
+      ),
+    );
+  }
+
+  Widget _newPassField(String title) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextField(
+              obscureText: _passwordVisibleNewPass,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                fillColor: Color(0xfff3f3f4),
+                filled: true,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisibleNewPass
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisibleNewPass = !_passwordVisibleNewPass;
+                      debugPrint("tap");
+                    });
+                  },
+                ),))
+        ],
+      ),
+    );
+  }
+
+  Widget _confirmPassField(String title) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextField(
+              obscureText: _passwordVisibleConfirmPass,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  fillColor: Color(0xfff3f3f4),
+                  filled: true,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisibleConfirmPass
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisibleConfirmPass = !_passwordVisibleConfirmPass;
+                      debugPrint("tap");
+                    });
+                  },
+                ),))
         ],
       ),
     );
@@ -137,8 +216,8 @@ class _SignUpPageState extends State<SignUpPage> {
       children: <Widget>[
         _entryField("Username"),
         _entryField("Email"),
-        _entryField("Password", isPassword: true),
-        _entryField("Confirm Password", isPassword: true),
+        _newPassField("Password"),
+        _confirmPassField("Confirm Password")
       ],
     );
   }
@@ -182,6 +261,27 @@ class _SignUpPageState extends State<SignUpPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => LoginPage()),
+                        );
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(
+                        SnackBar(
+                          content:
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                              "Congratulation!! You can now log in",
+                              style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800
+                                )
+                              )
+                            ]
+                          ),
+                          backgroundColor: Colors.green,
+                        )
                         );
                       },
                       child: _submitButton(),
