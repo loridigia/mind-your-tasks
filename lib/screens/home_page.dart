@@ -260,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                           horizontal: 20.0, vertical: 10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: build_active_events(),
+                        children: activeEvents.length > 0? build_active_events() : build_no_events(),
                       ),
                     ),
                   ],
@@ -271,6 +271,19 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  List<Widget> build_no_events() {
+    return [Padding(
+      padding: const EdgeInsets.only(left: 5, top: 70),
+      child: Text(
+          "THERE ARE NO EVENTS",
+          style: TextStyle(
+              color: Colors.grey,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w500)
+      ),
+    )];
   }
 
   _onAddEvent(context) {

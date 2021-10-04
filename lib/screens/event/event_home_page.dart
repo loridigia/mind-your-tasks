@@ -596,7 +596,7 @@ class _EventHomePageState extends State<EventHomePage> {
     });
     if (list.isEmpty) list.add(
       Padding(
-        padding: const EdgeInsets.only(left: 85, top: 50),
+        padding: const EdgeInsets.only(left: 90, top: 50),
         child: Text(
             "THERE ARE NO TASKS",
             style: TextStyle(
