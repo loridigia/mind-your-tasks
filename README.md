@@ -96,6 +96,3 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/loridigia/mind-your-tasks/LICENSE.txt
-[product-screenshot]: (screenshots/event.png 250x250)
-[product-screenshot2]: (screenshots/homepage.png 250x250)
-[product-screenshot3]: (screenshots/login.png 250x250)
