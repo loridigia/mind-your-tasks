@@ -27,12 +27,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot]]
+<img src="https://github.com/loridigia/mind-your-tasks/blob/main/screenshots/event.png" width="250" height="100">
+<img src="https://github.com/loridigia/mind-your-tasks/blob/main/screenshots/homepage.png" width="250" height="100">
+<img src="https://github.com/loridigia/mind-your-tasks/blob/main/screenshots/login.png" width="250" height="100">
 
-
-[product-screenshot]
-[product-screenshot2]
-[product-screenshot3]
 The project has beed developed as a university course on Human Computer Interaction.
 The idea for the project started when in order to organize the work for the project (like documents, idea ecc.) we found ourself to share those files via some famouse social media. So we thought, why dont we develop a simple and intuitive app that allows the users to share tasks? 
 
