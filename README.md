@@ -27,8 +27,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot][product-screenshot2][product-screenshot3]]
+[![Product Name Screen Shot]]
 
+
+[product-screenshot]
+[product-screenshot2]
+[product-screenshot3]
 The project has beed developed as a university course on Human Computer Interaction.
 The idea for the project started when in order to organize the work for the project (like documents, idea ecc.) we found ourself to share those files via some famouse social media. So we thought, why dont we develop a simple and intuitive app that allows the users to share tasks? 
 
@@ -96,17 +100,16 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/loridigia/mind-your-tasks/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[forks-url]: https://github.com/loridigia/mind-your-tasks/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[stars-url]: https://github.com/loridigia/mind-your-tasks/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-url]: https://github.com/loridigia/mind-your-tasks/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/loridigia/mind-your-tasks/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: screenshots/event.png
-[product-screenshot2]: screenshots/homepage.png
-[product-screenshot3]: screenshots/login.png
+[product-screenshot]: (screenshots/event.png 250x250)
+[product-screenshot2]: (screenshots/homepage.png 250x250)
+[product-screenshot3]: (screenshots/login.png 250x250)
